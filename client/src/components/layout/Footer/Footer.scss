@@ -1,0 +1,62 @@
+@import '../../../styles/colors';
+@import '../../../styles/variables';
+
+.footer__container {
+    background-color: $bg-footer;
+    padding: 32px 0;
+    text-align: center;
+
+    .footer__item {
+        margin-bottom: 52px;
+        margin-top: 52px;
+    }
+
+    .footer__item-icon {
+        margin-top: 20px;
+        font-size: 48px;
+        color: #fff;
+    }
+
+    .footer__item-title {
+        color: $text-white;
+        font-size: 16px;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 20px 0 12px 0;
+    }
+
+    .footer__item-des {
+        color: $text-gray;
+        line-height: 20px;
+        font-size: 14px;
+
+    }
+
+    .footer__item-logo {
+        padding-bottom: 6px;
+
+        img {
+            max-width: 260px;
+            width: 100%;
+            position: relative;
+            top: -4px;
+        }
+    }
+
+}
+
+.footer__coppyright {
+    background-color: $bg-black;
+    text-align: center;
+    font-size: 14px;
+    color: $text-gray;
+    padding: 12px;
+
+    a {
+        font-weight: bold;
+        font-size: 15px;
+        padding-left: 4px;
+        color: $text-gray;
+    }
+}

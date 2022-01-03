@@ -1,0 +1,85 @@
+@import '../../styles/colors';
+@import '../../styles/variables';
+
+.payment__success {
+
+    font-size: 13px;
+    line-height: 15px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+
+    @media screen and (min-width: $breakpoint-md) {
+        font-size: 14px;
+    }
+
+    &-bill {
+        display: flex;
+        flex-direction: column;
+        padding: 12px 0 24px;
+
+        &-heading {
+            font-size: 17px;
+            font-weight: 700;
+            padding: 24px 0;
+            letter-spacing: 0.6px;
+        }
+
+        &-group {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        &-group:first-child {
+            border-bottom: 4px solid #eee;
+
+        }
+
+        &-left {
+            font-weight: bold;
+        }
+
+        &-right {
+            font-weight: bold;
+            padding-left: 16px;
+
+        }
+    }
+
+    &-message {
+        margin-top: 12px;
+        padding: 24px 16px;
+        background-color: #eee;
+        box-shadow: 2px 2px 10px #eee;
+        border: 1px solid #ddd;
+        box-shadow: 3px 4px 4px 0px #eee;
+
+
+        p {
+            font-size: 17px;
+            line-height: 20px;
+            font-weight: bold;
+            color: $text-success;
+        }
+
+        ul {
+            list-style: disc;
+            padding: 16px 16px;
+            line-height: 20px;
+
+            li {
+                padding: 8px 12px;
+            }
+        }
+    }
+
+    .light-text {
+        font-weight: 500;
+    }
+
+    .text-nowrap {
+        white-space: nowrap;
+    }
+
+}

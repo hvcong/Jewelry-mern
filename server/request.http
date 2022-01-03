@@ -1,0 +1,149 @@
+@baseURL = http://localhost:5000/api
+
+######### Auth
+
+### Load user
+GET {{baseURL}}/auth
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2Y2YzY2Y1ZjIwMGJlYmExMWZmOTQiLCJpYXQiOjE2MzgzMjI5NzJ9.QX90uLaMlvDjGbg69e4Qm8p6Xz26ZJYFu6Egz3FwKtk
+
+### Register user
+POST {{baseURL}}/auth/register
+Content-Type: application/json
+
+{
+    "username":"admin",
+    "password":"admin"
+}
+
+### Login user
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+    "username":"Hoanaaaag",
+    "password":"123"
+}
+
+######### admin
+
+### get all products
+GET {{baseURL}}/admin/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2Mzg2MDc4ODd9.JsHn68Mbr6iIzxke9YnpDGTveC9ZziraK0HM2D5XPDU
+
+### create product
+POST {{baseURL}}/admin/products/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2MzgzMjkwNDl9.0d0lgbECWEykv7KG8PmSYhjQ6vfLMEGZjr0VdwB_99s
+
+{
+    "title": "title product",
+    "price": 1000,
+    "imageUrl": "http://mauweb.monamedia.net/custommade/wp-content/uploads/2018/12/sp11-300x300.jpg"
+}
+
+### update product
+PUT {{baseURL}}/admin/products/61b073a93ff9d8edd15fc2a6
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2MzgzMjkwNDl9.0d0lgbECWEykv7KG8PmSYhjQ6vfLMEGZjr0VdwB_99s
+
+{
+    "title": "Update 4",
+    "price": 1000,
+    "imageUrl": "http://mauweb.monamedia.net/custommade/wp-content/uploads/2018/12/sp11-300x300.jpg"
+}
+
+### delete product
+DELETE  {{baseURL}}/admin/products/61b073a93ff9d8edd15fc2a6
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2MzgzMjkwNDl9.0d0lgbECWEykv7KG8PmSYhjQ6vfLMEGZjr0VdwB_99s
+
+### get all user
+GET {{baseURL}}/admin/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2MzgzMjkwNDl9.0d0lgbECWEykv7KG8PmSYhjQ6vfLMEGZjr0VdwB_99s
+
+### delete user
+DELETE {{baseURL}}/admin/users/61a6d73add353f9e6a057ac2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2MzgzMjkwNDl9.0d0lgbECWEykv7KG8PmSYhjQ6vfLMEGZjr0VdwB_99s
+
+########### CART
+
+### read cart
+GET {{baseURL}}/cart
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2MzgzMjkwNDl9.0d0lgbECWEykv7KG8PmSYhjQ6vfLMEGZjr0VdwB_99s
+
+### add + plus product at cart
+POST {{baseURL}}/cart/61a6fa1e979602e349710e69
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2MzgzMjkwNDl9.0d0lgbECWEykv7KG8PmSYhjQ6vfLMEGZjr0VdwB_99s
+
+### minus product in cart
+POST {{baseURL}}/cart/61a6fad62b2c191f8188c430/minus
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2MzgzMjkwNDl9.0d0lgbECWEykv7KG8PmSYhjQ6vfLMEGZjr0VdwB_99s
+
+
+### remove product from cart
+DELETE {{baseURL}}/cart/61a6fa1e979602e349710e69
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2MzgzMjkwNDl9.0d0lgbECWEykv7KG8PmSYhjQ6vfLMEGZjr0VdwB_99s
+
+
+####### product
+
+### get a product
+GET {{baseURL}}/products/61a6fad62b2c191f8188c430
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2Mzg2MDc4ODd9.JsHn68Mbr6iIzxke9YnpDGTveC9ZziraK0HM2D5XPDU
+
+### get all products
+GET {{baseURL}}/products?_category=ring
+
+
+####### invoice
+
+### get all invoice by admin
+GET {{baseURL}}/invoices/admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2Mzg2MDc4ODd9.JsHn68Mbr6iIzxke9YnpDGTveC9ZziraK0HM2D5XPDU
+
+### get a invoice by admin
+GET {{baseURL}}/invoices/admin/61cbcfda19594343fb9f18ce
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2Mzg2MDc4ODd9.JsHn68Mbr6iIzxke9YnpDGTveC9ZziraK0HM2D5XPDU
+
+
+
+### update a invoice by admin
+POST {{baseURL}}/invoices/admin/61cbcfda19594343fb9f18ce
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWE2ZWFhYzQwMjUwMWI3MDhiNTNhZWEiLCJpYXQiOjE2Mzg2MDc4ODd9.JsHn68Mbr6iIzxke9YnpDGTveC9ZziraK0HM2D5XPDU
+Content-Type: application/json
+
+{
+    "status": "shipping"
+}
+
+
+### create new invoice
+POST {{baseURL}}/invoices/create
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWNiYzdjNTNjZGQzNTM0Y2I1MzM3MDMiLCJpYXQiOjE2NDA3NDQ5NDB9.V58Zipqa80xQWIEEItQQiYe7EV1Jg4CfINLE_5wbx24
+Content-Type: application/json
+
+{
+    "products": [
+        {
+            "title": "title",
+            "price": 10000,
+            "sale": 10,
+            "imageUrl": "asdfd",
+            "quantity": 2,
+            "status": "processing"
+        }
+    ],
+    "voucherPercent": 20,
+    "transportFee": 10
+}
+
+### get all invoice by customer
+GET {{baseURL}}/invoices
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWNiYzdjNTNjZGQzNTM0Y2I1MzM3MDMiLCJpYXQiOjE2NDA3NDQ5NDB9.V58Zipqa80xQWIEEItQQiYe7EV1Jg4CfINLE_5wbx24
+
+
+### get a invoice by customer
+GET {{baseURL}}/invoices/61cbcfda19594343fb9f18ce
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MWNiYzdjNTNjZGQzNTM0Y2I1MzM3MDMiLCJpYXQiOjE2NDA3NDQ5NDB9.V58Zipqa80xQWIEEItQQiYe7EV1Jg4CfINLE_5wbx24
+
+

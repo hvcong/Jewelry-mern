@@ -1,0 +1,64 @@
+@import '../../../styles/colors';
+@import '../../../styles/variables';
+
+.login__container {
+    // background-color: rgb(93, 28, 139);
+
+    input {
+        border: none;
+        outline: none
+    }
+
+    img {
+        width: 100%;
+    }
+
+    .login__heading {
+        font-weight: bold;
+        font-size: 28px;
+        letter-spacing: 1px;
+        text-align: center;
+        margin-bottom: 16px;
+    }
+
+    .login__btn {
+        display: block;
+        padding: 12px;
+        text-align: center;
+        background-color: $btn-color;
+        transition: $transition-nomal;
+        color: $text-white;
+        border-radius: 4px;
+        margin-bottom: 8px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $btn-color-hover;
+            color: $text-white;
+        }
+    }
+
+    .login__btn-facebook {
+        display: block;
+        padding: 12px;
+        text-align: center;
+        transition: $transition-nomal;
+        color: $text-black;
+        border-radius: 4px;
+        margin-bottom: 8px;
+        border: 1px solid $btn-color;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $btn-color-hover;
+            color: $text-white;
+        }
+    }
+
+    .input__message {
+        padding: 8px 0;
+        color: red;
+        font-size: 13px;
+    }
+
+}

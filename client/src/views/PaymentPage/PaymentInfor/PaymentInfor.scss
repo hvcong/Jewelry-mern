@@ -1,0 +1,41 @@
+@import '../../../styles/colors';
+@import '../../../styles/variables';
+
+.information__container {
+    padding-bottom: 24px;
+    padding-top: 24px;
+
+    .infor__heading {
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    label {
+        display: block;
+        padding: 8px 0;
+        font-weight: bold;
+        padding-top: 20px;
+    }
+
+    input,
+    textarea {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        outline: none;
+
+        &:focus {
+            border-radius: 4px;
+            box-shadow: 0 0 4px rgb(91, 220, 230);
+        }
+    }
+
+    .message {
+        font-size: 13px;
+        padding-top: 8px;
+        color: $text-error;
+        display: none;
+    }
+
+}

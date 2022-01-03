@@ -1,0 +1,136 @@
+@import '../../../styles/colors';
+@import '../../../styles/variables';
+
+.cart__list-container {
+    color: $text-black;
+    font-size: 12px;
+
+    @media screen and (min-width: $breakpoint-sm) {
+        font-size: 14px;
+    }
+
+    .cart__table {
+        width: 100%;
+
+
+
+        tr {
+            position: relative;
+            border-bottom: 1px solid rgba(221, 221, 221, 0.726);
+        }
+
+        tr:first-child {
+            border-bottom: 4px solid #ddd;
+        }
+
+        th {
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 16px 8px 8px 8px;
+            word-spacing: 1.5px;
+            white-space: nowrap;
+
+        }
+
+        td {
+            padding: 16px 8px;
+            vertical-align: middle;
+
+            @media screen and (min-width:$breakpoint-sm) {
+                display: table-cell !important;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: $transition-fast;
+
+            &:hover {
+                color: $btn-color-hover;
+            }
+        }
+
+        &-item-close-btn {
+            position: absolute;
+            padding: 0 !important;
+
+            span {
+                padding: 4px;
+                cursor: pointer;
+                transition: $transition-nomal;
+                color: #ccc;
+
+                &:hover {
+                    color: $btn-color-hover;
+                }
+            }
+
+            @media screen and (min-width: $breakpoint-sm) {
+                position: relative;
+                top: 4px;
+                left: 4px;
+            }
+
+
+        }
+
+
+
+        &-item-img-wrap {
+            min-width: 60px;
+            max-width: 90px;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        &-item-price {
+            font-weight: bold;
+            white-space: nowrap;
+
+            span {
+                display: block;
+                white-space: nowrap;
+                padding: 4px 0;
+            }
+
+            &-old {
+                font-size: 11px;
+                color: $text-gray;
+                font-weight: 500;
+                text-decoration: line-through;
+            }
+        }
+
+        &-item-price-mobile {
+            display: block;
+            padding-top: 6px;
+            white-space: nowrap;
+        }
+    }
+
+    .cart__list-bottom {
+        margin-top: 16px;
+
+        &-btn {
+            display: inline-flex;
+            align-items: center;
+            background-color: $btn-color;
+            padding: 8px 16px;
+            color: $text-white;
+            text-decoration: none;
+
+            span {
+                padding-right: 8px;
+                font-size: 18px;
+            }
+
+            &:hover {
+                cursor: pointer;
+                background-color: $btn-color-hover;
+            }
+        }
+    }
+}

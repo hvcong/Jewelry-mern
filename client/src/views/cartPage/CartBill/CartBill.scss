@@ -1,0 +1,84 @@
+@import '../../../styles/colors';
+@import '../../../styles/variables';
+
+.cart__bill {
+    color: $text-black;
+    font-size: 12px;
+
+    @media screen and (min-width: $breakpoint-sm) {
+        font-size: 14px;
+    }
+
+    &-heading {
+        padding: 16px 8px 8px 8px;
+        font-weight: 700;
+        border-bottom: 4px solid #ddd;
+    }
+
+    &-group {
+        display: flex;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    &-label {
+        margin-right: auto;
+    }
+
+    &-price {
+        font-weight: 700;
+    }
+
+    &-voucher {
+
+        span {
+            font-size: 20px;
+            padding-right: 8px;
+        }
+
+        &-enter {
+            display: flex;
+            flex: 1;
+            margin-left: 8px;
+            border: 1px solid #eee;
+        }
+
+        &-input {
+            flex: 1;
+            outline: none;
+            border: none;
+            padding-left: 8px;
+        }
+
+        &-btn {
+            padding: 8px 8px;
+            background-color: $btn-color;
+            color: $text-white;
+            transition: $transition-nomal;
+            white-space: nowrap;
+
+            &:hover {
+                cursor: pointer;
+                background-color: $btn-color-hover;
+            }
+
+        }
+
+
+    }
+
+    &-btn {
+        background-color: $btn-color;
+        color: $text-white;
+        justify-content: center;
+        padding: 10px 16px;
+
+        &:hover {
+            color: $text-white;
+            text-decoration: none;
+            cursor: pointer;
+            background-color: $btn-color-hover;
+        }
+    }
+}

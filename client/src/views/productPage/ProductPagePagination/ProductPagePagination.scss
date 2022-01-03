@@ -1,0 +1,55 @@
+@import '../../../styles/colors';
+@import '../../../styles/variables';
+
+.pagination__container {
+    display: flex;
+    justify-content: center;
+    padding: 16px 0;
+    margin-bottom: 12px;
+
+    .pagination__item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        width: 36px;
+        height: 36px;
+        margin: 0 6px;
+        border: 1px solid #ddd;
+        transition: $transition-nomal;
+
+        &:hover {
+            background-color: $btn-color-hover;
+            border-color: $btn-color-hover;
+            color: $text-white;
+            cursor: pointer;
+
+        }
+
+        &.active {
+            background-color: $btn-color;
+            border-color: $btn-color-hover;
+            color: $text-white;
+            cursor: context-menu;
+        }
+
+        &-dot:hover {
+            cursor: context-menu;
+            background-color: #fff;
+            border-color: #ddd;
+            color: $text-black;
+        }
+
+
+    }
+
+    .pagination__btn {
+
+        span {
+            font-size: 16px;
+            pointer-events: none;
+        }
+    }
+
+
+}

@@ -1,0 +1,39 @@
+@import '../../../styles/colors';
+@import '../../../styles/variables';
+
+.admin__product {
+
+    .btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+
+        span {
+            font-size: 16px;
+        }
+    }
+
+    &-btn-add {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        position: absolute;
+        right: 24px;
+        top: 12px;
+        font-weight: 500;
+        transition: $transition-nomal;
+
+        span {
+            padding-right: 4px;
+        }
+
+        &:hover {
+            color: rgb(23, 216, 87);
+            cursor: pointer;
+        }
+    }
+
+
+
+}

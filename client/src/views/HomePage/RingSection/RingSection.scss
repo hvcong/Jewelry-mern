@@ -1,0 +1,95 @@
+@import '../../../styles/colors';
+@import '../../../styles/variables';
+
+.ring__container {
+    background-color: #fff;
+
+    .ring {
+        padding-top: 44px;
+        padding-bottom: 44px;
+
+        &__heading {
+            font-size: 48px;
+            text-align: center;
+            padding: 24px;
+            letter-spacing: 1.4px;
+        }
+
+        &__line {
+            width: 60px;
+            height: 3px;
+            background-color: $btn-color;
+            margin: 0 auto;
+            margin-bottom: 32px;
+        }
+
+
+        &__middle {
+            display: flex;
+            flex-wrap: wrap;
+
+            &-img {
+                width: 50%;
+                overflow: hidden;
+
+                img {
+                    width: 100%;
+                    display: block;
+                    transition: transform 0.5s ease-in-out;
+
+                    &:hover {
+                        transform: scale(1.2);
+                    }
+                }
+
+            }
+        }
+
+        &__product {
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            max-width: 244px;
+            padding-top: 24px;
+            padding-bottom: 24px;
+
+            &-title {
+                font-size: 16px;
+                font-weight: bold;
+                padding: 8px 0;
+            }
+
+            &-img {
+                width: 100%;
+            }
+
+            &-mass {
+                padding: 12px 0;
+                font-size: 14px;
+            }
+
+            &-btn {
+                display: inline-block;
+                max-width: 84px;
+                font-size: 13px;
+                font-weight: bold;
+                color: $text-white;
+                background-color: $btn-color;
+                padding: 8px 12px;
+                border-radius: 8px;
+                margin: 0 auto;
+                text-decoration: none;
+                transition: $transition-nomal;
+
+                &:hover {
+                    background-color: $btn-color-hover;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+
+}

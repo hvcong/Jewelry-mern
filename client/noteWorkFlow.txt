@@ -1,0 +1,2 @@
+npx create-react-app client
+npm i node-sass react-router-dom

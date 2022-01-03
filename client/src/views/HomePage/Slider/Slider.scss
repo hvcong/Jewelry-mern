@@ -1,0 +1,188 @@
+@import '../../../styles/colors';
+@import '../../../styles/variables';
+
+@keyframes slideBtnFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+
+
+
+.slider-container {
+    position: relative;
+    font-size: 13px;
+    line-height: 16px;
+
+    @media screen and (min-width: $breakpoint-md) {
+        font-size: 16px;
+        line-height: 18px;
+    }
+
+
+    .slider {
+        display: flex;
+        width: 200vw;
+        flex-wrap: nowrap;
+        color: $text-white;
+        transition: all 0.9s ease;
+
+
+        &__item {
+            width: 100vw;
+            height: 652px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 0 12px;
+
+                @media screen and (min-width: $breakpoint-sm) {
+                    padding: 0 60px;
+                }
+            }
+
+            &-logo {
+                max-width: 200px;
+
+                @media screen and (min-width: $breakpoint-sm) {
+                    max-width: 300px;
+                }
+
+                img {
+                    width: 100%;
+                }
+            }
+
+            &-heading {
+                font-family: 'Philosopher';
+                font-size: 32px;
+                line-height: 36px;
+                font-weight: bold;
+                letter-spacing: 0.6px;
+                margin: 32px 0;
+                padding: 0 8px;
+
+                @media screen and (min-width: $breakpoint-md) {
+                    font-size: 40px;
+                    line-height: 48px;
+                }
+            }
+
+            &-sub-text {
+                opacity: 0.8;
+                padding: 0 24px;
+            }
+
+            &-link {
+                padding: 8px 8px;
+                margin-top: 16px;
+                min-width: 200px;
+                background-color: transparent;
+                font-weight: bold;
+                letter-spacing: 0.6px;
+                border: 2px solid #fff;
+                transition: $transition-nomal;
+                color: $text-white;
+                text-decoration: none;
+
+                &:hover {
+                    background-color: #fff;
+                    cursor: pointer;
+                    color: $text-black;
+                }
+            }
+        }
+
+        &__btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            top: 50%;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            color: #ddd;
+            opacity: 0;
+            transition: $transition-nomal;
+
+            &:hover {
+                background-color: #ddd;
+                color: $btn-color;
+                cursor: pointer;
+            }
+
+            &-prev {
+                left: 16px;
+                transform: translateX(24px);
+
+                span {
+                    position: relative;
+                    left: 4px;
+                }
+            }
+
+            &-next {
+                right: 16px;
+                transform: translateX(-24px);
+            }
+        }
+
+        &__dot {
+            display: flex;
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+
+            &-item {
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                border: 2px solid #ddd;
+                border-radius: 50%;
+                margin: 0 4px;
+                cursor: pointer;
+                transition: $transition-nomal;
+
+                &.active {
+                    background-color: #ddd;
+                }
+
+                &:hover {
+                    border-color: $btn-color;
+                }
+
+                &.active:hover {
+                    border-color: #ddd;
+                    cursor: context-menu;
+                }
+            }
+
+
+        }
+
+    }
+
+    &:hover .add-animation {
+        animation: slideBtnFadeIn 0.5s ease forwards;
+    }
+
+}

@@ -1,0 +1,114 @@
+@import '../../../styles/colors';
+@import '../../../styles/variables';
+
+.filter-container {
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+
+    .filter__path {
+        font-size: 18px;
+        color: $text-gray;
+        text-align: center;
+
+        &-item {
+            display: inline-block;
+            text-transform: uppercase;
+            color: $text-black;
+            text-decoration: none;
+
+        }
+
+        &-item:first-child {
+            padding-left: 0;
+
+            &:hover {
+                transition: $transition-fast;
+                color: $btn-color-hover;
+            }
+        }
+
+        &-item:last-child {
+            font-weight: bold;
+            cursor: context-menu;
+        }
+
+        &-item-flag {
+            display: inline-block;
+            padding: 0 16px;
+        }
+    }
+
+    .filter__menu {
+        align-items: center;
+
+        &-wrap {
+            display: flex;
+            align-items: center;
+
+        }
+
+        &-icon {
+            cursor: pointer;
+
+            &:hover {
+                color: $btn-color-hover;
+                transition: $transition-fast;
+            }
+        }
+
+        &-text {
+            display: block;
+            padding-left: 8px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+
+        &-item {
+            margin-left: 8px;
+            font-size: 14px;
+            background-color: #eee;
+            padding: 4px 8px;
+            border-radius: 24px;
+            border: 1px solid #ddd;
+
+            &-icon-close {
+                font-size: 14px;
+                padding-right: 8px;
+                cursor: pointer;
+                transition: $transition-fast;
+
+                &:hover {
+                    color: $btn-color-hover;
+                    font-weight: bold;
+                }
+            }
+
+            &-text {
+                margin-right: 8px;
+            }
+
+            &-price {
+                font-weight: 700;
+            }
+
+        }
+    }
+
+    .filter__sort {
+        align-items: center;
+
+        &-label {
+            font-size: 16px;
+            padding-right: 16px;
+        }
+
+        &-select {
+            outline: none;
+            padding: 6px;
+            border: 1px solid #ddd;
+            background-image: linear-gradient(rgb(255, 255, 255), rgba(233, 233, 232, 0.699));
+        }
+    }
+}

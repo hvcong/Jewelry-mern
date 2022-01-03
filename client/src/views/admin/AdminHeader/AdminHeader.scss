@@ -1,0 +1,20 @@
+@import '../../../styles/colors';
+@import '../../../styles/variables';
+
+.admin__header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+
+    .header__icon {
+        padding: 0 8px;
+        color: $text-black;
+        transition: $transition-nomal;
+        cursor: pointer;
+
+        &:hover {
+            color: $btn-color-hover;
+        }
+    }
+}
