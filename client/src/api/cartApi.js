@@ -1,14 +1,12 @@
-import dotenv from 'dotenv'
 import fetchData from "./fetchClient"
-dotenv.config()
-
-const api = process.env.REACT_APP_API + 'cart'
+import { api } from '../store/constants'
+const newApi = api + '/cart'
 
 const cartApi = {
 
     getAll: async () => {
         try {
-            return await fetchData(`${api}`)
+            return await fetchData(`${newApi}`)
         } catch (error) {
             return {
                 success: false,
@@ -19,7 +17,7 @@ const cartApi = {
     add: async (productId, quantity) => {
 
         try {
-            return await fetchData(`${api}/${productId}`, {
+            return await fetchData(`${newApi}/${productId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -35,7 +33,7 @@ const cartApi = {
 
     plus: async (productId) => {
         try {
-            let response = await fetchData(`${api}/${productId}/plus`, {
+            let response = await fetchData(`${newApi}/${productId}/plus`, {
                 method: 'POST'
             })
 
@@ -50,7 +48,7 @@ const cartApi = {
 
     minus: async (productId) => {
         try {
-            let response = await fetchData(`${api}/${productId}/minus`, {
+            let response = await fetchData(`${newApi}/${productId}/minus`, {
                 method: 'POST'
             })
 
@@ -65,7 +63,7 @@ const cartApi = {
 
     remove: async (productId) => {
         try {
-            const response = await fetchData(`${api}/${productId}`, {
+            const response = await fetchData(`${newApi}/${productId}`, {
                 method: 'DELETE',
             })
 
@@ -80,7 +78,7 @@ const cartApi = {
 
     resetCart: async () => {
         try {
-            const response = await fetchData(`${api}/reset`, {
+            const response = await fetchData(`${newApi}/reset`, {
                 method: 'DELETE',
             })
 

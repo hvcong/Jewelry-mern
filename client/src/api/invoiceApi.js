@@ -1,8 +1,7 @@
-import dotenv from 'dotenv'
+import { api } from '../store/constants'
 import fetchData from "./fetchClient"
-dotenv.config()
 
-const api = process.env.REACT_APP_API + 'invoices'
+const newApi = api + '/invoices'
 
 const invoiceApi = {
 
@@ -10,7 +9,7 @@ const invoiceApi = {
     create: async (invoice) => {
         try {
 
-            const response = await fetchData(`${api}/create`, {
+            const response = await fetchData(`${newApi}/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -29,7 +28,7 @@ const invoiceApi = {
     // for admin
     getAll: async () => {
         try {
-            return await fetchData(`${api}/admin`, {
+            return await fetchData(`${newApi}/admin`, {
                 method: 'GET',
             })
 
@@ -45,7 +44,7 @@ const invoiceApi = {
 
     deleteOne: async (id) => {
         try {
-            const response = await fetchData(`${api}/admin/${id}`, {
+            const response = await fetchData(`${newApi}/admin/${id}`, {
                 method: 'DELETE'
             })
 
@@ -60,7 +59,7 @@ const invoiceApi = {
     updateOne: async ({ id, ...invoiceUpdate }) => {
         try {
 
-            const response = await fetchData(`${api}/admin/${id}`, {
+            const response = await fetchData(`${newApi}/admin/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

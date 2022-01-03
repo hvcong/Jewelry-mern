@@ -1,14 +1,12 @@
-import dotenv from 'dotenv'
 import fetchData from "./fetchClient"
-dotenv.config()
-
-const api = process.env.REACT_APP_API + 'auth'
+import { api } from '../store/constants'
+const newApi = api + '/auth'
 
 const authApi = {
 
     getAll: async () => {
         try {
-            return await fetchData(`${api}/users`)
+            return await fetchData(`${newApi}/users`)
         } catch (error) {
             return {
                 success: false,
@@ -18,7 +16,7 @@ const authApi = {
 
     delete: async (id) => {
         try {
-            return await fetchData(`${api}/users/${id}`, {
+            return await fetchData(`${newApi}/users/${id}`, {
                 method: 'DELETE'
             })
         } catch (error) {
@@ -30,7 +28,7 @@ const authApi = {
 
     checkAccessToken: async () => {
         try {
-            return await fetchData(`${api}/check`, {
+            return await fetchData(`${newApi}/check`, {
                 method: 'GET'
             })
         } catch (error) {
@@ -42,7 +40,7 @@ const authApi = {
 
     login: async (loginData) => {
         try {
-            return await fetchData(`${api}/login`, {
+            return await fetchData(`${newApi}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -58,7 +56,7 @@ const authApi = {
 
     register: async (registerData) => {
         try {
-            return await fetchData(`${api}/register`, {
+            return await fetchData(`${newApi}/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

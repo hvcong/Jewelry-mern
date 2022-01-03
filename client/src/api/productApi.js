@@ -1,7 +1,6 @@
-import dotenv from 'dotenv'
+import { api } from '../store/constants'
 import fetchData from "./fetchClient"
-dotenv.config()
-const api = process.env.REACT_APP_API + 'products'
+const newApi = api + '/products'
 
 const productApi = {
 
@@ -24,7 +23,7 @@ const productApi = {
 
 
         try {
-            return await fetchData(`${api}?_page=${current}&_limit=${limit}${queryFilter}`)
+            return await fetchData(`${newApi}?_page=${current}&_limit=${limit}${queryFilter}`)
         } catch (error) {
             return {
                 success: false,
@@ -35,7 +34,7 @@ const productApi = {
     // for admin
     getAll: async () => {
         try {
-            return await fetchData(`${api}/all`)
+            return await fetchData(`${newApi}/all`)
         } catch (error) {
             return {
                 success: false,
@@ -46,7 +45,7 @@ const productApi = {
     get: async (id) => {
         try {
 
-            return await fetchData(`${api}/${id}`)
+            return await fetchData(`${newApi}/${id}`)
         } catch (error) {
             return {
                 success: false,
@@ -57,7 +56,7 @@ const productApi = {
     create: async (product) => {
 
         try {
-            return await fetchData(`${api}/`, {
+            return await fetchData(`${newApi}/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -75,7 +74,7 @@ const productApi = {
 
     delete: async (id) => {
         try {
-            return await fetchData(`${api}/${id}`, {
+            return await fetchData(`${newApi}/${id}`, {
                 method: 'DELETE',
             })
         } catch (erorr) {
@@ -89,7 +88,7 @@ const productApi = {
     update: async ({ _id, ...productUpdate }) => {
 
         try {
-            return await fetchData(`${api}/${_id}`, {
+            return await fetchData(`${newApi}/${_id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
