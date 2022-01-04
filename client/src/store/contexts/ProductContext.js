@@ -3,6 +3,7 @@ import productApi from "../../api/productApi";
 import productReducer from "../reducers/productReducer";
 import { setProducts } from "../actions/productAction"
 import { toast } from "react-toastify";
+import { useGlobalContext } from '../contexts/GlobalContext'
 
 const ProductContext = createContext()
 
@@ -12,6 +13,8 @@ export function useProductContext() {
 
 
 function ProductContextProvider({ children }) {
+
+    const { setIsSpinnerLoading } = useGlobalContext()
     const [state, dispatch] = useReducer(productReducer, {
         products: [],
     })
@@ -36,11 +39,12 @@ function ProductContextProvider({ children }) {
     })
 
     async function loadProducts() {
-
+        setIsSpinnerLoading(true)
         const response = await productApi.getSome({
             page,
             filter
         })
+        setIsSpinnerLoading(false)
 
         if (response.success) {
             setMaxPrice(response.maxPrice)
@@ -48,7 +52,7 @@ function ProductContextProvider({ children }) {
             setPage(response.pagination)
             dispatch(setProducts(response.products))
         } else {
-            toast.error('Đường mạng không ổn định, vui lòng thử lại')
+            toast.error('Đường mạng không ổn định')
         }
     }
 

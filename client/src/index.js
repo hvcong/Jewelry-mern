@@ -25,7 +25,6 @@ import GlobalContextProvider from './store/contexts/GlobalContext';
 ReactDOM.render(
   <React.StrictMode>
     <GlobalContextProvider>
-
       <AuthContextProvider>
         <ProductContextProvider>
           <CartContextProvider>

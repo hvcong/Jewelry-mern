@@ -8,8 +8,6 @@ function GlobalContextProvider({ children }) {
     const [isLoading, setIsSpinnerLoading] = useState(true)
 
 
-
-
     const GlobalContextData = {
         isLoading,
         setIsSpinnerLoading
