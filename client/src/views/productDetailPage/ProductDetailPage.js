@@ -7,6 +7,7 @@ import Comment from './Comment'
 import './ProductDetailPage.scss'
 import QuantityProduct from '../../components/QuantityProduct/QuantityProduct'
 import { toast } from 'react-toastify'
+import { useGlobalContext } from '../../store/contexts/GlobalContext'
 
 function ProductDetailPage() {
 
@@ -14,6 +15,7 @@ function ProductDetailPage() {
     const [product, setProduct] = useState({})
     const { addProductToCart } = useCartContext()
     const [quantity, setQuantity] = useState(1)
+    const { setIsSpinnerLoading } = useGlobalContext()
 
 
 
@@ -21,7 +23,9 @@ function ProductDetailPage() {
 
     useEffect(() => {
         async function fetchProduct() {
+            setIsSpinnerLoading(true)
             const response = await productApi.get(id)
+            setIsSpinnerLoading(false)
 
             if (response.success) {
                 setProduct(response.product)
