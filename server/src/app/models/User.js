@@ -18,7 +18,6 @@ const UserSchema = new Schema({
     },
     name: {
         type: String,
-        default: 'Cong nha',
     },
 }, {
     timestamps: true
