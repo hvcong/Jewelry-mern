@@ -109,6 +109,8 @@ function FormEditProduct({ setIsOpen, handleUpdateProduct, productEdit }) {
                                 id="category" className="form-control">
                                 <option value="watch" >Đồng hồ</option>
                                 <option value="ring">Nhẫn</option>
+                                <option value="earring">Bông tai</option>
+                                <option value="necklace">Dây chuyền</option>
                             </select>
                         </div>
                         <div className="form-group col-6">

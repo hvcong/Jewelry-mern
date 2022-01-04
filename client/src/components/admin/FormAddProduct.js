@@ -13,7 +13,7 @@ function FormAddProduct({ setIsOpen, handleCreateProduct }) {
         sale: '',
         quantity: '',
         category: 'watch',
-        material: 'synthetic'
+        material: 'synthetic',
     })
 
     const { title, description, imageUrl, price, sale, quantity, category, material } = stateForm
@@ -70,16 +70,18 @@ function FormAddProduct({ setIsOpen, handleCreateProduct }) {
                                 onChange={handleOnChange}
                                 className="form-control" id="description" placeholder="Mô tả sản phẩm..." />
                         </div>
-                        <div className="form-group col-6">
+
+                        <div className="form-group col-12 col-sm-6">
                             <label htmlFor="imageUrl">Hình ảnh</label>
                             <input
                                 type="text"
                                 name="imageUrl"
                                 value={imageUrl}
                                 onChange={handleOnChange}
-                                className="form-control" id="imageUrl" placeholder="Số lượng..." />
+                                className="form-control" id="imageUrl" placeholder="https://..." />
+
                         </div>
-                        <div className="form-group col-6">
+                        <div className="form-group col-12 col-sm-6">
                             <label htmlFor="price">Giá sản phẩm</label>
                             <input
                                 type="number"
@@ -88,7 +90,7 @@ function FormAddProduct({ setIsOpen, handleCreateProduct }) {
                                 onChange={handleOnChange}
                                 className="form-control" id="price" placeholder="Giá..." />
                         </div>
-                        <div className="form-group col-6">
+                        <div className="form-group col-12 col-sm-6">
                             <label htmlFor="sale">Khuyến mãi</label>
                             <input
                                 type="number"
@@ -97,7 +99,7 @@ function FormAddProduct({ setIsOpen, handleCreateProduct }) {
                                 onChange={handleOnChange}
                                 className="form-control" id="sale" placeholder="Khuyến mãi..." />
                         </div>
-                        <div className="form-group col-6">
+                        <div className="form-group col-12 col-sm-6">
                             <label htmlFor="quantity">Số lượng</label>
                             <input
                                 type="number"
@@ -106,7 +108,7 @@ function FormAddProduct({ setIsOpen, handleCreateProduct }) {
                                 onChange={handleOnChange}
                                 className="form-control" id="quantity" placeholder="Số lượng..." />
                         </div>
-                        <div className="form-group col-6">
+                        <div className="form-group col-12 col-sm-6">
                             <label htmlFor="category">Loại sản phẩm</label>
                             <select
                                 name="category"
@@ -116,9 +118,11 @@ function FormAddProduct({ setIsOpen, handleCreateProduct }) {
                                 id="category" className="form-control">
                                 <option value="watch" >Đồng hồ</option>
                                 <option value="ring">Nhẫn</option>
+                                <option value="earring">Bông tai</option>
+                                <option value="necklace">Dây chuyền</option>
                             </select>
                         </div>
-                        <div className="form-group col-6">
+                        <div className="form-group col-12 col-sm-6">
                             <label htmlFor="material">Chất liệu</label>
                             <select
                                 name="material"

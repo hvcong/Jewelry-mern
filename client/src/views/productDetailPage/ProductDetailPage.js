@@ -18,8 +18,8 @@ function ProductDetailPage() {
     const { setIsSpinnerLoading } = useGlobalContext()
 
 
-
-    const { _id, title, imageUrl, price, sale, category, material } = product
+    // https://pacific-mesa-67716.herokuapp.com/images/sp34-300x300.jpg
+    const { _id, title, imageUrl, price, sale, category, material, description } = product
 
     useEffect(() => {
         async function fetchProduct() {
@@ -67,7 +67,7 @@ function ProductDetailPage() {
                                 <span>Chất liệu: </span>
                                 <span>{material}</span>
                             </div>
-                            <p className="product__info-des"> Porttitor magna cras vel  libero hendrerit vel nam in sapien id urna egestas cursus. Ut enim ad minim eniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in.</p>
+                            <p className="product__info-des">{description}</p>
 
                             <div className="product__info-group">
                                 <QuantityProduct quantity={quantity} setQuantity={setQuantity} />
