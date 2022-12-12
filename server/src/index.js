@@ -9,7 +9,13 @@ const cors = require("cors");
 
 db.connect();
 
-app.use(cors());
+const corsOptions = {
+  origin: "*",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 //static files
 app.use(express.static("public"));
