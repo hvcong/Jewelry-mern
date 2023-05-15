@@ -4,24 +4,20 @@ import { parsePriceToString } from "../../utils";
 import { useCartContext } from "../../store/contexts/CartContext";
 import { useAuthContext } from "../../store/contexts/AuthContext";
 import { toast } from "react-toastify";
+import { useGlobalContext } from "../../store/contexts/GlobalContext";
+import { useEffect, useState } from "react";
 
 function Product({ product }) {
-  const { addProductToCart } = useCartContext();
-  const { isAuthenticated } = useAuthContext();
-  const { imageUrl, title, price, sale, _id } = product;
+  const { addToCart, checkIsExistInCart, cart } = useGlobalContext();
+  const { imageUrl, name, price, sale, id, quantity } = product;
   const navigate = useNavigate();
 
-  console.log(imageUrl);
-
+  const [isExistInCart, setIsExistInCart] = useState(checkIsExistInCart(id));
+  useEffect(() => {
+    setIsExistInCart(checkIsExistInCart(id));
+    return () => {};
+  }, [cart]);
   //function
-  function handleAddProduct(id) {
-    if (!isAuthenticated) {
-      toast.warning("Vui lòng đăng nhập trước!");
-      navigate("/login");
-    } else {
-      addProductToCart(_id);
-    }
-  }
 
   return (
     <div className="product__wrap">
@@ -31,17 +27,13 @@ function Product({ product }) {
         <span className="notifi__sale-affter"></span>
       </div>
 
-      <Link to={"/products/" + _id} className="product__image product__link">
-        <img
-          src={
-            "https://nypost.com/wp-content/uploads/sites/2/2021/10/amyo-jewelry.jpg?quality=90&strip=all"
-          }
-        />
+      <Link to={"/products/" + id} className="product__image product__link">
+        <img src={imageUrl} />
       </Link>
 
       <div className="product__body">
-        <Link to={"/products/" + _id} className="product__title product__link">
-          {title}
+        <Link to={"/products/" + id} className="product__title product__link">
+          {name}
         </Link>
         <div className="product__price">
           <span className="product__price-current">
@@ -54,14 +46,22 @@ function Product({ product }) {
             - {sale}%
           </span>
         </div>
-        <div
-          onClick={() => {
-            handleAddProduct(_id);
-          }}
-          className="product__btn"
-        >
-          Thêm vào giỏ
-        </div>
+        {quantity > 0 ? (
+          <div
+            onClick={() => {
+              if (isExistInCart) {
+                navigate("/cart");
+              } else {
+                addToCart(product);
+              }
+            }}
+            className={`product__btn ${isExistInCart && "view__cart"}`}
+          >
+            {isExistInCart ? "Xem giỏ hàng" : "Thêm vào giỏ"}
+          </div>
+        ) : (
+          <div className={`product__btn sout_out`}>Đã hết hàng</div>
+        )}
       </div>
     </div>
   );

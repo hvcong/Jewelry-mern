@@ -1,71 +1,42 @@
 import fetchData from "./fetchClient";
 import { api } from "../store/constants";
+import axiosClient from "./axiosClient";
 const newApi = api + "/auth";
 
 const authApi = {
   getAll: async () => {
-    try {
-      return await fetchData(`${newApi}/users`);
-    } catch (error) {
-      return {
-        success: false,
-      };
-    }
+    return;
   },
 
   delete: async (id) => {
-    try {
-      return await fetchData(`${newApi}/users/${id}`, {
-        method: "DELETE",
-      });
-    } catch (error) {
-      return {
-        success: false,
-      };
-    }
+    return;
   },
 
   checkAccessToken: async () => {
-    try {
-      return await fetchData(`${newApi}/check`, {
-        method: "GET",
-      });
-    } catch (error) {
-      return {
-        success: false,
-      };
-    }
+    return;
   },
 
-  login: async (loginData) => {
-    console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-    try {
-      return await fetchData(`${newApi}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(loginData),
-      });
-    } catch (err) {
-      return { success: false };
+  login: async ({ email, password }) => {
+    console.log(email, password);
+    if (email == "hvcong@gmail.com" && password == "1111111") {
+      return {
+        email: email,
+        role: "ad",
+        name: "Hoang Van Cong",
+      };
     }
+    return null;
   },
 
-  register: async (registerData) => {
-    try {
-      return await fetchData(`${newApi}/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(registerData),
-      });
-    } catch (err) {
+  register: async (data) => {
+    if (data.email == "hvcong@gmail.com") {
       return {
-        success: false,
-        message: "Internal server error",
+        email: data.email,
+        role: "ad",
+        name: "Hoang Van Cong",
       };
+    } else {
+      return null;
     }
   },
 };

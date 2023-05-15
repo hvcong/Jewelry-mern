@@ -1,101 +1,137 @@
-import { useAdminContext } from '../../../store/contexts/AdminContext'
-import './AdminInvoices.scss'
+import "../AdminProducts/AdminProducts.scss";
+import { useState, useEffect } from "react";
+import Modal from "../../../components/admin/Modal";
+import FormAddProduct from "../../../components/admin/FormAddProduct";
+import FormEditProduct from "../../../components/admin/FormEditProduct";
+import { useAdminContext } from "../../../store/contexts/AdminContext";
+import { setProducts } from "../../../store/actions/productAction";
+import { useGlobalContext } from "../../../store/contexts/GlobalContext";
+import FormOrder from "../../../components/admin/FormOrder";
+import { parsePriceToString } from "../../../utils";
 
 function AdminInvoices() {
+  const { setNavItem } = useAdminContext();
+  const { orders } = useGlobalContext();
 
-    const { invoices, deleteOneInvoice, switchShipping } = useAdminContext()
+  const [modalState, setModalState] = useState({
+    visible: false,
+    type: "",
+    itemSelected: null,
+  });
 
+  useEffect(() => {
+    setNavItem("invoices");
+  }, []);
 
-    //function
-    async function handleDeleteInvoice(id) {
-        const response = await deleteOneInvoice(id)
+  return (
+    <div>
+      <div className="admin__product">
+        <div className="content__heading">Dánh sách đơn hàng</div>
 
-        if (!response.success) {
-            alert('Delete invoice not success')
-        }
-    }
+        <table className="table table-sm">
+          <thead className="thead-dark">
+            <tr>
+              <th scope="col">Mã ĐH</th>
+              <th scope="col">Email KH</th>
+              <th scope="col">Thời gian đặt</th>
+              <th scope="col">Tổng tiền</th>
+              <th scope="col">Trạng thái</th>
 
-    async function handleShipping(id) {
-        const response = await switchShipping(id)
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders &&
+              orders.length > 0 &&
+              orders.map((item, index) => {
+                const { id, account, state, orderDate, cost } = item;
+                return (
+                  <tr key={id} className="product__item">
+                    <td>{id}</td>
+                    <td>{account.email}</td>
+                    <td>{orderDate}</td>
+                    <td>{parsePriceToString(cost)}</td>
+                    <td className="order__state">
+                      <div className={`order__state_${state}`}>
+                        {(state == "oke" && "Thành công") ||
+                          (state == "cancel" && "Đã hủy") ||
+                          (state == "pendding" && "Đang chờ xử lí")}
+                      </div>
+                    </td>
+                    <td className="more-btn">
+                      <span class="material-icons">more_vert</span>
+                      <div className="more-btn-list">
+                        {state == "pendding" && (
+                          <>
+                            <div
+                              className="more-btn-item more-btn-item-accept"
+                              onClick={() => {}}
+                            >
+                              <span>Xác nhận</span>
+                            </div>
+                            <div
+                              className="more-btn-item more-btn-item-delete"
+                              onClick={() => {}}
+                            >
+                              <span>Hủy</span>
+                            </div>
+                            <div
+                              className="more-btn-item more-btn-item-edit"
+                              onClick={() => {
+                                setModalState({
+                                  visible: true,
+                                  type: "update",
+                                  itemSelected: item,
+                                });
+                              }}
+                            >
+                              <span>Chỉnh sửa</span>
+                            </div>
+                          </>
+                        )}
 
-        if (!response.success) {
-            alert('Switch shipping not success')
-        }
-    }
+                        <div
+                          className="more-btn-item more-btn-item-view "
+                          onClick={() => {
+                            setModalState({
+                              visible: true,
+                              type: "view",
+                              itemSelected: item,
+                            });
+                          }}
+                        >
+                          <span>Chi tiết</span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
 
-
-
-    return (
-        <div>
-            <div>
-                <div className="admin__invoices">
-                    <div className='content__heading'>
-                        Tất cả đơn hàng
-                    </div>
-
-                    <table className="table table-sm">
-                        <thead className="thead-dark">
-                            <tr>
-                                <th scope="col">Người đặt</th>
-                                <th scope="col">Địa chỉ</th>
-                                <th scope="col">Trạng thái</th>
-                                <th scope="col">Thanh toán</th>
-                                <th scope="col">Thời gian</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                invoices && invoices.length > 0 && invoices.map((invoice) => {
-                                    const { _id, name, address, payBy, status, createdAt } = invoice
-                                    return (
-                                        <tr key={_id} className={'invoice__item ' + status}
-                                        >
-                                            <td>{name}</td>
-                                            <td>{address}</td>
-                                            <td>{status}</td>
-                                            <td>{payBy}</td>
-                                            <td>{createdAt}</td>
-                                            <td className='more-btn'>
-                                                <span class="material-icons">
-                                                    more_vert
-                                                </span>
-                                                <div className='more-btn-list' >
-                                                    <div className={status === 'processing' ? 'more-btn-item' : 'd-none'}
-                                                        onClick={() => handleShipping(_id)}
-                                                    >
-                                                        <span class="material-icons">
-                                                            task_alt
-                                                        </span>
-                                                        <span>Giao hàng</span>
-                                                    </div>
-                                                    <div className='more-btn-item'
-                                                        onClick={() => handleDeleteInvoice(_id)}
-                                                    >
-                                                        <span class="material-icons">
-                                                            delete_forever
-                                                        </span>
-                                                        <span>Xóa</span>
-                                                    </div>
-                                                    <div className='more-btn-item'>
-                                                        <span class="material-icons">
-                                                            feed
-                                                        </span>
-                                                        <span>Chi tiết</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-            </div >
-        </div>
-    )
+      {modalState.visible && (
+        <Modal
+          setIsOpen={() => {
+            setModalState({
+              visible: false,
+            });
+          }}
+        >
+          <FormOrder
+            setIsOpen={() =>
+              setModalState({
+                visible: false,
+              })
+            }
+            setModalState={setModalState}
+            modalState={modalState}
+          />
+        </Modal>
+      )}
+    </div>
+  );
 }
 
-export default AdminInvoices
+export default AdminInvoices;

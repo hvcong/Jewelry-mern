@@ -1,37 +1,43 @@
-@import '../../styles/colors';
-@import '../../styles/variables';
+@import "../../styles/colors";
+@import "../../styles/variables";
 
 .modal__container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
 
-    .modal__content {
-        position: relative;
-        padding: 16px;
-        width: 800px;
-        max-width: 100%;
-        background-color: $bg-white;
-        margin: 0 auto;
-        margin-top: 16px;
+  .modal__title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .modal__content {
+    position: relative;
+    padding: 16px;
+    max-height: 90%;
+    overflow-y: auto;
+    width: 800px;
+    max-width: 100%;
+    background-color: $bg-white;
+    margin: 0 auto;
+    margin-top: 16px;
+  }
+
+  .modal__close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 32px;
+    padding: 8px;
+    cursor: pointer;
+    transition: $transition-fast;
+
+    &:hover {
+      color: $btn-color-hover;
     }
-
-    .modal__close-btn {
-        position: absolute;
-        top: 16px;
-        right: 16px;
-        font-size: 32px;
-        padding: 8px;
-        cursor: pointer;
-        transition: $transition-fast;
-
-        &:hover {
-            color: $btn-color-hover;
-        }
-    }
-
-
+  }
 }

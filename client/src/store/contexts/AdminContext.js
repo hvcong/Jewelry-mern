@@ -1,157 +1,134 @@
-import dotenv from 'dotenv'
-import { createContext, useContext, useEffect, useReducer, useState } from 'react'
-import authApi from '../../api/authApi'
-import invoiceApi from '../../api/invoiceApi';
-import productApi from '../../api/productApi'
+import dotenv from "dotenv";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
+import authApi from "../../api/authApi";
+import invoiceApi from "../../api/invoiceApi";
+import productApi from "../../api/productApi";
 dotenv.config();
 
-
-const AdminContext = createContext()
+const AdminContext = createContext();
 
 function AdminContextProvider({ children }) {
+  const [products, setProducts] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [invoices, setInvoices] = useState([]);
 
-    const [products, setProducts] = useState([])
-    const [users, setUsers] = useState([])
-    const [invoices, setInvoices] = useState([])
+  const [navItem, setNavItem] = useState("");
 
-    const [navItem, setNavItem] = useState('')
+  //function for product
+  async function addProduct(product) {
+    const response = await productApi.create(product);
 
-    useEffect(() => {
+    if (response.success && response.newProduct) {
+      setProducts([...products, response.newProduct]);
+    }
+    return response;
+  }
 
-        async function fetchUsers() {
-            const response = await authApi.getAll()
-            if (response.success && response.users) setUsers(response.users)
+  async function updateProduct(product) {
+    const response = await productApi.update(product);
+    if (response.success && response.newProduct) {
+      const newProduct = response.newProduct;
+      const newProducts = products.map((product) => {
+        if (product._id === newProduct._id) {
+          return newProduct;
         }
+        return product;
+      });
 
-        async function fetchProducts() {
-            const response = await productApi.getAll()
-            if (response.success && response.products) setProducts(response.products)
-        }
+      setProducts(newProducts);
+    }
+    return response;
+  }
 
-        async function fetchInvoices() {
-            const response = await invoiceApi.getAll()
-            if (response.success && response.invoices) setInvoices(response.invoices)
-        }
+  async function deleteProduct(id) {
+    const response = await productApi.delete(id);
+    if (response.success) {
+      const newProducts = products.filter((product) => {
+        return product._id !== id;
+      });
 
-        fetchUsers()
-        fetchProducts()
-        fetchInvoices()
-    }, [])
-
-    //function for product
-    async function addProduct(product) {
-        const response = await productApi.create(product)
-
-        if (response.success && response.newProduct) {
-            setProducts([...products, response.newProduct])
-        }
-        return response
+      setProducts(newProducts);
     }
 
-    async function updateProduct(product) {
-        const response = await productApi.update(product)
-        if (response.success && response.newProduct) {
-            const newProduct = response.newProduct
-            const newProducts = products.map(product => {
-                if (product._id === newProduct._id) {
-                    return newProduct
-                }
-                return product
-            })
+    return response;
+  }
 
-            setProducts(newProducts)
+  //function for user
+  async function deleteUser(id) {
+    const response = await authApi.delete(id);
+
+    if (response.success) {
+      const newUsers = users.filter((user) => {
+        return user._id !== id;
+      });
+      setUsers(newUsers);
+    }
+
+    return response;
+  }
+
+  //function for invoices
+  async function deleteOneInvoice(id) {
+    const response = await invoiceApi.deleteOne(id);
+
+    if (response.success) {
+      const newInvoices = invoices.filter((invoice) => {
+        return invoice._id !== id;
+      });
+      setInvoices(newInvoices);
+    }
+
+    return response;
+  }
+
+  async function switchShipping(id) {
+    const response = await invoiceApi.updateOne({ id, status: "shipping" });
+
+    if (response.success) {
+      const newInvoices = invoices.map((invoice) => {
+        if (invoice._id === id) {
+          let newInvoice = invoice;
+          newInvoice.status = "shipping";
+          return newInvoice;
         }
-        return response
+        return invoice;
+      });
+
+      setInvoices(newInvoices);
     }
 
-    async function deleteProduct(id) {
-        const response = await productApi.delete(id)
-        if (response.success) {
-            const newProducts = products.filter(product => {
-                return product._id !== id
-            })
+    return response;
+  }
 
-            setProducts(newProducts)
-        }
+  const AdminContextData = {
+    navItem,
+    setNavItem,
+    users,
+    products,
+    invoices,
+    setProducts,
+    updateProduct,
+    deleteProduct,
+    addProduct,
+    deleteUser,
+    deleteOneInvoice,
+    switchShipping,
+  };
 
-        return response
-
-    }
-
-
-    //function for user
-    async function deleteUser(id) {
-        const response = await authApi.delete(id)
-
-        if (response.success) {
-            const newUsers = users.filter(user => {
-                return user._id !== id
-            })
-            setUsers(newUsers)
-        }
-
-        return response
-    }
-
-
-    //function for invoices
-    async function deleteOneInvoice(id) {
-        const response = await invoiceApi.deleteOne(id)
-
-        if (response.success) {
-            const newInvoices = invoices.filter(invoice => {
-                return invoice._id !== id
-            })
-            setInvoices(newInvoices)
-        }
-
-        return response
-    }
-
-    async function switchShipping(id) {
-        const response = await invoiceApi.updateOne({ id, status: 'shipping' })
-
-
-        if (response.success) {
-            const newInvoices = invoices.map(invoice => {
-                if (invoice._id === id) {
-                    let newInvoice = invoice
-                    newInvoice.status = 'shipping'
-                    return newInvoice
-                }
-                return invoice
-            })
-
-            setInvoices(newInvoices)
-        }
-
-        return response
-    }
-
-
-    const AdminContextData = {
-        navItem,
-        setNavItem,
-        users,
-        products,
-        invoices,
-        setProducts,
-        updateProduct,
-        deleteProduct,
-        addProduct,
-        deleteUser,
-        deleteOneInvoice,
-        switchShipping,
-    }
-
-    return (
-        <AdminContext.Provider value={AdminContextData} >
-            {children}
-        </AdminContext.Provider>
-    )
+  return (
+    <AdminContext.Provider value={AdminContextData}>
+      {children}
+    </AdminContext.Provider>
+  );
 }
 
-export default AdminContextProvider
+export default AdminContextProvider;
 export function useAdminContext() {
-    return useContext(AdminContext)
-} 
+  return useContext(AdminContext);
+}

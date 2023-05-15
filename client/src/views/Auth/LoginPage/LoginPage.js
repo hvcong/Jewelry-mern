@@ -5,13 +5,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { useAuthContext } from "../../../store/contexts/AuthContext";
 import { toast } from "react-toastify";
+import { useGlobalContext } from "../../../store/contexts/GlobalContext";
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useAuthContext();
+  const { logIn, account } = useGlobalContext();
+
+  const isAuthenticated = account.isLogin;
   const [loginInput, setLoginInput] = useState({
-    username: "",
-    password: "",
+    username: "hvcong@gmail.com",
+    password: "1111111",
   });
 
   const usernameMessRef = useRef();
@@ -58,11 +61,16 @@ function LoginPage() {
     if (isCheck) {
       usernameMessRef.current.innerText = "";
       passwordMessRef.current.innerText = "";
-      console.log("login");
-      const user = await login(loginInput);
 
-      if (user) {
+      const result = await logIn({
+        email: loginInput.username,
+        password: loginInput.password,
+      });
+
+      if (result) {
         navigate(-1);
+      } else {
+        toast.error("Tài khoản hoặc mật khẩu không chính xác!");
       }
     }
   }

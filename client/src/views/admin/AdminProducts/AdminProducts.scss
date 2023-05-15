@@ -1,39 +1,79 @@
-@import '../../../styles/colors';
-@import '../../../styles/variables';
+@import "../../../styles/colors";
+@import "../../../styles/variables";
 
 .admin__product {
+  .btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 
-    .btn {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
+    span {
+      font-size: 16px;
+    }
+  }
 
-        span {
-            font-size: 16px;
-        }
+  .more-btn-item {
+    display: flex;
+    padding: 8px 0;
+    justify-content: center;
+    height: 32px;
+    margin: 8px;
+    border-radius: 4px;
+
+    &-delete {
+      background-color: rgb(233, 98, 98);
+    }
+    &-accept {
+      background-color: green;
+      color: white;
+    }
+    &-edit {
+      background-color: rgb(78, 84, 68);
+    }
+    &-view {
+      background-color: rgb(47, 153, 188);
+    }
+    &-cancel {
+      background-color: rgb(233, 98, 98);
     }
 
-    &-btn-add {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 14px;
-        position: absolute;
-        right: 24px;
-        top: 12px;
-        font-weight: 500;
-        transition: $transition-nomal;
+    &:hover {
+      opacity: 0.6;
+    }
+  }
 
-        span {
-            padding-right: 4px;
-        }
+  &-btn-add {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    position: absolute;
+    right: 24px;
+    top: 12px;
+    font-weight: 500;
+    transition: $transition-nomal;
 
-        &:hover {
-            color: rgb(23, 216, 87);
-            cursor: pointer;
-        }
+    span {
+      padding-right: 4px;
     }
 
+    &:hover {
+      color: rgb(23, 216, 87);
+      cursor: pointer;
+    }
+  }
+}
 
+.order__state {
+  &_pendding {
+    color: blue;
+  }
 
+  &_oke {
+    color: green;
+  }
+
+  &_cancel {
+    color: red;
+  }
 }

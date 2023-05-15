@@ -13,7 +13,6 @@ import { api } from "../store/constants";
 function App() {
   const [isOpenMenuModal, setIsOpenMenuModal] = useState(false);
   const { isLoading } = useGlobalContext();
-  console.log(api);
 
   return (
     <div className="app-container container-fruid">

@@ -1,22 +1,47 @@
 .modal__create-products {
+  .modal__heading {
+    padding-left: 24px;
+  }
 
-    .modal__heading {
-        padding-left: 24px;
+  .modal__form-massage {
+    color: red;
+    margin: 0;
+  }
+
+  .form__btn-group {
+    display: flex;
+    justify-content: end;
+  }
+
+  .img-show {
+    height: 200px;
+    width: 200px;
+  }
+}
+
+// order form
+
+.list__products {
+  .list__products_title {
+    padding-bottom: 12px;
+    font-weight: bold;
+  }
+  .product__item {
+    .btn_delete {
+      color: red;
+      cursor: pointer;
+      transition: all 0.4 ease;
+      &:hover span {
+        opacity: 0.8;
+        scale: 1.2;
+      }
     }
-
-    .modal__form-massage {
-        color: red;
-        margin: 0;
+    .quantity__input {
+      width: 70px;
     }
+  }
+}
 
-    .form__btn-group {
-        display: flex;
-        justify-content: end;
-    }
-
-    .img-show {
-        height: 200px;
-        width: 200px;
-    }
-
+.admin__container table {
+  margin-bottom: 12px;
 }
