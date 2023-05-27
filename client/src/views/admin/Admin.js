@@ -8,9 +8,11 @@ import { useAdminContext } from "../../store/contexts/AdminContext";
 import { useAuthContext } from "../../store/contexts/AuthContext";
 import Modal from "../../components/layout/Modal/Modal";
 import { useGlobalContext } from "../../store/contexts/GlobalContext";
+import Spinner from "../../components/Spinner";
+import { ToastContainer } from "react-toastify";
 
 function Admin() {
-  const { account } = useGlobalContext();
+  const { account, isLoading } = useGlobalContext();
   const [route, setRoute] = useState("");
   const [isOpenNav, setIsOpenNav] = useState(false);
 
@@ -35,11 +37,22 @@ function Admin() {
             </div>
             <div className="col-12">
               <Outlet />
+              <Spinner isLoading={isLoading} />
             </div>
           </div>
         </div>
       </div>
-
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+      />
       {isOpenNav ? (
         <Modal setIsOpen={setIsOpenNav}>
           <AdminNav

@@ -16,7 +16,8 @@ export function isVietnamesePhoneNumberValid(number) {
 
 function PaymentPage({ navigation }) {
   const navigate = useNavigate();
-  const { account, cart, amountMoney, paymentOke } = useGlobalContext();
+  const { account, cart, amountMoney, paymentOke, loadAllData } =
+    useGlobalContext();
   const [inputState, setInputState] = useState({
     name: "cong",
     phonenumber: "0869231352",
@@ -39,7 +40,7 @@ function PaymentPage({ navigation }) {
 
   useEffect(() => {
     if (cart && cart.items.length === 0) {
-      navigate("/products/all");
+      navigate("/products/category/all");
     }
   }, [cart]);
 
@@ -78,12 +79,34 @@ function PaymentPage({ navigation }) {
     }
 
     if (isCheck) {
-      let res = await orderApi.addOne({});
+      let res = await orderApi.addOne({
+        phoneNumber: inputState.phonenumber,
+        address: inputState.address,
+        orderDate: new Date(),
+        state: "pendding",
+        cost: amountMoney.total,
+        account: { id: account.id },
+        orderDetails: cart.items.map((item) => {
+          return {
+            quantity: item.quantity,
+            price: item.product.price,
+            sale: item.product.sale,
+            product: { id: item.product.id },
+          };
+        }),
+      });
 
       if (res.message) {
         toast.error("Có lỗi xảy ra, vui lòng thử lại!");
       } else {
-        paymentOke();
+        for (const cartItem of cart.items) {
+          await orderApi.updateProduct({
+            ...cartItem.product,
+            quantity: cartItem.product.quantity - cartItem.quantity,
+          });
+        }
+
+        await paymentOke();
         toast.success("Đặt hành thành công!");
       }
     }

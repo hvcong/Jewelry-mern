@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 
 function ProductPage({ productRoute, ...route }) {
   const minPrice = 0;
-  const maxPrice = 10000;
+  const maxPrice = 1000000;
   const [isOpenNavModal, setIsOpenNavModal] = useState(false);
   const [filterPrice, setFilterPrice] = useState({
     min: minPrice,
@@ -51,9 +51,14 @@ function ProductPage({ productRoute, ...route }) {
         <div className="col-12 col-lg-9">
           <div className="row">
             <div className="col-12">
-              <ProductPageList />
+              <ProductPageList
+                category={cate || "all"}
+                filterPrice={filterPrice}
+              />
             </div>
-            <div className="col-12">{<ProductPagePagination />}</div>
+            {cate == "all" && !filterPrice.isUsing && (
+              <div className="col-12">{<ProductPagePagination />}</div>
+            )}
           </div>
         </div>
       </div>

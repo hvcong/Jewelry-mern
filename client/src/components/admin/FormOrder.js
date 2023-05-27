@@ -2,13 +2,19 @@ import "./FormAddProduct.scss";
 import { useState, useRef, useEffect } from "react";
 import { parsePriceToString } from "./../../utils/index";
 import QuantityProduct from "../QuantityProduct/QuantityProduct";
+import { isVietnamesePhoneNumberValid } from "../../views/PaymentPage/PaymentPage";
+import { useGlobalContext } from "../../store/contexts/GlobalContext";
+import orderApi from "../../api/orderApi";
+import { toast } from "react-toastify";
 
 function FormOrder({ setIsOpen, modalState, setModalState }) {
   const formMessageRef = useRef();
 
+  const { setIsSpinnerLoading, loadAllData } = useGlobalContext();
+
   const [stateForm, setStateForm] = useState({
     id: 2,
-    phonenumber: "0823432121",
+    phoneNumber: "0823432121",
     address: "2/3/4 duong 15",
     orderDate: new Date().toDateString(),
     state: "oke",
@@ -53,10 +59,12 @@ function FormOrder({ setIsOpen, modalState, setModalState }) {
       email: "dfsdfds@gmail.com",
       name: "Hoàng Văn Công",
       address: "29/8/3 đường số 10, hiệp bình Chánh, thủ đức",
-      phonenumber: "0864234234",
+      phoneNumber: "0864234234",
       role: "kh",
     },
   });
+
+  const [errMessage, setErrMessage] = useState({});
 
   useEffect(() => {
     if (modalState.itemSelected) {
@@ -76,6 +84,52 @@ function FormOrder({ setIsOpen, modalState, setModalState }) {
 
   async function handleOnSubmit(e) {
     e.preventDefault();
+
+    let _errMess = {};
+
+    let isCheck = true;
+
+    if (!stateForm.address) {
+      _errMess.address = "Không được bỏ trống!";
+      isCheck = false;
+    } else if (!stateForm.address.trim()) {
+      _errMess.address = "Không được bỏ trống!";
+      isCheck = false;
+    }
+
+    if (!stateForm.phoneNumber) {
+      _errMess.phoneNumber = "Không được bỏ trống!";
+      isCheck = false;
+    } else if (!stateForm.phoneNumber.trim()) {
+      _errMess.phoneNumber = "Không được bỏ trống!";
+      isCheck = false;
+    } else {
+      if (!isVietnamesePhoneNumberValid(stateForm.phoneNumber)) {
+        _errMess.phoneNumber = "Không hợp lệ!";
+        isCheck = false;
+      }
+    }
+
+    setErrMessage(_errMess);
+    if (isCheck) {
+      setIsSpinnerLoading(true);
+
+      let { orderDetails, ..._order } = stateForm;
+
+      let res = await orderApi.updateById({
+        ..._order,
+        account: { id: stateForm.account.id },
+      });
+
+      if (res.success) {
+        await loadAllData();
+        setIsSpinnerLoading(false);
+        toast.success("Cập nhật thành công!");
+      } else {
+        setIsSpinnerLoading(false);
+        toast.error("Có lỗi xảy ra, vui lòng thử lại");
+      }
+    }
   }
 
   return (
@@ -125,21 +179,24 @@ function FormOrder({ setIsOpen, modalState, setModalState }) {
             <div className="form-group col-12 col-sm-6">
               <label htmlFor="price">Số điện thoại nhận hàng</label>
               <input
-                value={stateForm.phonenumber}
-                disabled
+                value={stateForm.phoneNumber}
                 onChange={handleOnChange}
+                name="phoneNumber"
                 className="form-control"
                 readOnly={modalState.type == "view"}
               />
+              <div className="message">{errMessage.phoneNumber}</div>
             </div>
             <div className="form-group col-12 col-sm-6">
               <label htmlFor="price">Địa chỉ nhận hàng</label>
               <input
                 value={stateForm.address}
                 onChange={handleOnChange}
+                name="address"
                 className="form-control"
                 readOnly={modalState.type == "view"}
               />
+              <div className="message">{errMessage.address}</div>
             </div>
             <div className="form-group col-12 col-sm-6">
               <label htmlFor="price">Trạng thái</label>
@@ -162,7 +219,6 @@ function FormOrder({ setIsOpen, modalState, setModalState }) {
                 <table className="table table-sm">
                   <thead className="thead-dark">
                     <tr>
-                      <th scope="col" className="text-center"></th>
                       <th scope="col" className="text-center">
                         Mã SP
                       </th>
@@ -186,58 +242,40 @@ function FormOrder({ setIsOpen, modalState, setModalState }) {
                       stateForm.orderDetails.map((item, index) => {
                         return (
                           <tr key={item.id} className="product__item">
-                            <td>
+                            {/* <td>
                               {stateForm.state == "pendding" &&
                                 modalState.type == "update" && (
                                   <div
                                     className="btn_delete"
-                                    onClick={() => {}}
+                                    onClick={() => {
+                                      let _orderDetails = [
+                                        ...stateForm.orderDetails,
+                                      ];
+
+                                      _orderDetails = _orderDetails.filter(
+                                        (orderDetail) => {
+                                          return orderDetail.id != item.id;
+                                        }
+                                      );
+
+                                      setStateForm({
+                                        ...stateForm,
+                                        orderDetails: _orderDetails,
+                                      });
+                                    }}
                                   >
                                     <span class="material-icons">
                                       delete_forever
                                     </span>
                                   </div>
                                 )}
-                            </td>
+                            </td> */}
                             <td className="text-center">{item.product.id}</td>
                             <td className="text-right">
                               {parsePriceToString(item.price)}
                             </td>
                             <td className="text-right">{item.sale}%</td>
-                            <td className="text-right">
-                              {modalState.type == "view" ? (
-                                item.quantity
-                              ) : (
-                                <QuantityProduct
-                                  quantity={item.quantity}
-                                  setQuantity={(number) => {
-                                    let _orderDetails = [
-                                      ...stateForm.orderDetails,
-                                    ];
-                                    _orderDetails = _orderDetails.map(
-                                      (_item) => {
-                                        if (_item.id == item.id) {
-                                          return {
-                                            ..._item,
-                                            quantity: number,
-                                          };
-                                        }
-                                        return _item;
-                                      }
-                                    );
-
-                                    _orderDetails = _orderDetails.filter(
-                                      (_item) => _item.quantity > 0
-                                    );
-
-                                    setStateForm({
-                                      ...stateForm,
-                                      orderDetails: _orderDetails,
-                                    });
-                                  }}
-                                />
-                              )}
-                            </td>
+                            <td className="text-right">{item.quantity}</td>
                             <td className="text-right">
                               <div style={{ width: 100 }}>
                                 {parsePriceToString(

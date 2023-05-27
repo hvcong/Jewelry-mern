@@ -54,10 +54,10 @@ function Header({ setIsOpenMenuModal }) {
                 <div className="account__box arrow-top">
                   {isAuthenticated ? (
                     <>
-                      <Link to="/profile" className="account__box-item">
+                      {/* <Link to="/profile" className="account__box-item">
                         <span className="material-icons">person</span>
                         Thông tin của tôi
-                      </Link>
+                      </Link> */}
 
                       {account && account.role === "ad" && (
                         <Link

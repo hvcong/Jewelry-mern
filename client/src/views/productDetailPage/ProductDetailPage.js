@@ -58,7 +58,7 @@ function ProductDetailPage() {
     return <></>;
   }
 
-  const { name, imageUrl, price, sale, category, material, description } =
+  const { name, imageUri, price, sale, category, material, description } =
     product;
 
   return (
@@ -66,7 +66,7 @@ function ProductDetailPage() {
       <div className="product__detail-section">
         <div className="product__info row">
           <div className="col-12 col-md-6">
-            <img className="product__info-img" src={imageUrl} />
+            <img className="product__info-img" src={imageUri} />
           </div>
           <div className="col-12 col-md-6">
             <div className="product__info-right">

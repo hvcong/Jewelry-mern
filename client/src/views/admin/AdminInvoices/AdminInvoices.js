@@ -8,10 +8,13 @@ import { setProducts } from "../../../store/actions/productAction";
 import { useGlobalContext } from "../../../store/contexts/GlobalContext";
 import FormOrder from "../../../components/admin/FormOrder";
 import { parsePriceToString } from "../../../utils";
+import orderApi from "../../../api/orderApi";
+import { toast } from "react-toastify";
+import productApi from "../../../api/productApi";
 
 function AdminInvoices() {
   const { setNavItem } = useAdminContext();
-  const { orders } = useGlobalContext();
+  const { orders, setIsSpinnerLoading, loadAllData } = useGlobalContext();
 
   const [modalState, setModalState] = useState({
     visible: false,
@@ -23,6 +26,33 @@ function AdminInvoices() {
     setNavItem("invoices");
   }, []);
 
+  async function handleUpdateState(order, newState) {
+    setIsSpinnerLoading(true);
+    let { orderDetails, ..._order } = order;
+    let res = await orderApi.updateById({
+      ..._order,
+      account: { id: order.account.id },
+      state: newState,
+    });
+
+    if (res.success) {
+      if (newState == "cancel") {
+        for (const orderDetail of orderDetails) {
+          await orderApi.updateProduct({
+            ...orderDetail.product,
+            quantity: orderDetail.quantity + orderDetail.product.quantity,
+          });
+        }
+      }
+
+      await loadAllData();
+      setIsSpinnerLoading(false);
+      toast.success("Cập nhật thành công!");
+    } else {
+      setIsSpinnerLoading(false);
+      toast.error("Có lỗi xảy ra, vui lòng thử lại");
+    }
+  }
   return (
     <div>
       <div className="admin__product">
@@ -32,7 +62,7 @@ function AdminInvoices() {
           <thead className="thead-dark">
             <tr>
               <th scope="col">Mã ĐH</th>
-              <th scope="col">Email KH</th>
+              <th scope="col">Mã KH</th>
               <th scope="col">Thời gian đặt</th>
               <th scope="col">Tổng tiền</th>
               <th scope="col">Trạng thái</th>
@@ -48,7 +78,7 @@ function AdminInvoices() {
                 return (
                   <tr key={id} className="product__item">
                     <td>{id}</td>
-                    <td>{account.email}</td>
+                    <td>{account.id}</td>
                     <td>{orderDate}</td>
                     <td>{parsePriceToString(cost)}</td>
                     <td className="order__state">
@@ -65,13 +95,17 @@ function AdminInvoices() {
                           <>
                             <div
                               className="more-btn-item more-btn-item-accept"
-                              onClick={() => {}}
+                              onClick={() => {
+                                handleUpdateState(item, "oke");
+                              }}
                             >
                               <span>Xác nhận</span>
                             </div>
                             <div
                               className="more-btn-item more-btn-item-delete"
-                              onClick={() => {}}
+                              onClick={() => {
+                                handleUpdateState(item, "cancel");
+                              }}
                             >
                               <span>Hủy</span>
                             </div>

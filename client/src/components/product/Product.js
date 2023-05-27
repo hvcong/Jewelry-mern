@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 function Product({ product }) {
   const { addToCart, checkIsExistInCart, cart } = useGlobalContext();
-  const { imageUrl, name, price, sale, id, quantity } = product;
+  const { imageUri, name, price, sale, id, quantity } = product;
   const navigate = useNavigate();
 
   const [isExistInCart, setIsExistInCart] = useState(checkIsExistInCart(id));
@@ -28,7 +28,13 @@ function Product({ product }) {
       </div>
 
       <Link to={"/products/" + id} className="product__image product__link">
-        <img src={imageUrl} />
+        <img
+          src={
+            imageUri
+              ? imageUri
+              : "https://cdn.tgdd.vn/Products/Images/7264/231782/elio-es056-01-nam-2-1-org.jpg"
+          }
+        />
       </Link>
 
       <div className="product__body">

@@ -24,8 +24,8 @@ axiosClient.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    console.log("Response Error:", error.response.data);
-    return error.response.data;
+    console.log("Response Error:", error);
+    return error;
   }
 );
 

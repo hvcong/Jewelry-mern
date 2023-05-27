@@ -1,19 +1,22 @@
-import fetchData from "./fetchClient";
-import { api } from "../store/constants";
 import axiosClient from "./axiosClient";
-const newApi = api + "/auth";
 
 const authApi = {
   getAll: async () => {
-    return;
+    let url = `account`;
+    return axiosClient.get(url);
   },
 
   delete: async (id) => {
-    return;
+    return axiosClient.delete(`account/delete/${id}`);
   },
 
   checkAccessToken: async () => {
     return;
+  },
+
+  updateUser: async (formData) => {
+    let url = `account/update`;
+    return axiosClient.put(url, formData);
   },
 
   login: async ({ email, password }) => {
@@ -28,16 +31,8 @@ const authApi = {
     return null;
   },
 
-  register: async (data) => {
-    if (data.email == "hvcong@gmail.com") {
-      return {
-        email: data.email,
-        role: "ad",
-        name: "Hoang Van Cong",
-      };
-    } else {
-      return null;
-    }
+  register: async (formData) => {
+    return axiosClient.post("account/add", formData);
   },
 };
 export default authApi;

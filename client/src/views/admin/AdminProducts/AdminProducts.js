@@ -6,11 +6,18 @@ import FormEditProduct from "../../../components/admin/FormEditProduct";
 import { useAdminContext } from "../../../store/contexts/AdminContext";
 import { setProducts } from "../../../store/actions/productAction";
 import { useGlobalContext } from "../../../store/contexts/GlobalContext";
+import orderApi from "../../../api/orderApi";
+import { toast } from "react-toastify";
 
 function AdminProducts() {
   const { setNavItem } = useAdminContext();
 
-  const { products } = useGlobalContext();
+  const {
+    products,
+    orders = [],
+    loadAllData,
+    setIsSpinnerLoading,
+  } = useGlobalContext();
 
   const [modalState, setModalState] = useState({
     visible: false,
@@ -22,7 +29,34 @@ function AdminProducts() {
     setNavItem("products");
   }, []);
 
-  async function handleDeleteProduct(id) {}
+  async function handleDeleteProduct(id) {
+    let isExist = false;
+    orders.map((order) => {
+      let list = order.orderDetails || [];
+      list.map((item) => {
+        let product = item.product;
+        if (product.id == id) {
+          isExist = true;
+        }
+      });
+    });
+
+    if (!isExist) {
+      setIsSpinnerLoading(true);
+
+      let res = await orderApi.deleteProductById(id);
+      if (res.success) {
+        setIsSpinnerLoading(false);
+        await loadAllData();
+        toast.success("Xóa sản phẩm thành công!");
+      } else {
+        setIsSpinnerLoading(false);
+        toast.error("Có lỗi xảy ra, vui lòng thử lại!");
+      }
+    } else {
+      toast.warn("Không thể xóa sản phẩm, vì đã có đơn hàng trước đó!");
+    }
+  }
 
   return (
     <div>
@@ -95,7 +129,9 @@ function AdminProducts() {
                         </div>
                         <div
                           className="more-btn-item more-btn-item-delete "
-                          onClick={() => {}}
+                          onClick={() => {
+                            handleDeleteProduct(id);
+                          }}
                         >
                           <span>Xóa</span>
                         </div>

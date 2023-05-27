@@ -7,10 +7,13 @@ import { useAdminContext } from "../../../store/contexts/AdminContext";
 import { setProducts } from "../../../store/actions/productAction";
 import { useGlobalContext } from "../../../store/contexts/GlobalContext";
 import FormUser from "../../../components/admin/FormUser";
+import authApi from "../../../api/authApi";
+import { toast } from "react-toastify";
 
 function AdminUsers() {
   const { setNavItem } = useAdminContext();
-  const { users } = useGlobalContext();
+  const { users, orders, setIsSpinnerLoading, loadAllData } =
+    useGlobalContext();
 
   const [modalState, setModalState] = useState({
     visible: false,
@@ -22,28 +25,40 @@ function AdminUsers() {
     setNavItem("users");
   }, []);
 
+  async function handleDeleteUser(id) {
+    let isExist = false;
+    orders.map((order) => {
+      if (order.account.id == id) {
+        isExist = true;
+      }
+    });
+
+    if (!isExist) {
+      setIsSpinnerLoading(true);
+
+      let res = await authApi.delete(id);
+      if (res.success) {
+        setIsSpinnerLoading(false);
+        await loadAllData();
+        toast.success("Xóa thành công!");
+      } else {
+        setIsSpinnerLoading(false);
+        toast.error("Có lỗi xảy ra, vui lòng thử lại!");
+      }
+    } else {
+      toast.warn("Không thể xóa người dùng này, vì đã có đơn hàng trước đó!");
+    }
+  }
+
   return (
     <div>
       <div className="admin__product">
-        <div className="content__heading">
-          Danh sách khách hàng
-          <div
-            className="admin__product-btn-add"
-            onClick={() => {
-              setModalState({
-                visible: true,
-                type: "create",
-              });
-            }}
-          >
-            <span class="material-icons">post_add</span>
-            Thêm mới
-          </div>
-        </div>
+        <div className="content__heading">Danh sách khách hàng</div>
 
         <table className="table table-sm">
           <thead className="thead-dark">
             <tr>
+              <th scope="col">Mã KH</th>
               <th scope="col">Email</th>
               <th scope="col">Tên KH</th>
               <th scope="col">Số điện thoại</th>
@@ -55,12 +70,13 @@ function AdminUsers() {
             {users &&
               users.length > 0 &&
               users.map((item, index) => {
-                const { email, name, phonenumber, address } = item;
+                const { id, email, name, phoneNumber, address } = item;
                 return (
                   <tr key={email} className="product__item">
+                    <td>{id}</td>
                     <td>{email}</td>
                     <td>{name}</td>
-                    <td>{phonenumber}</td>
+                    <td>{phoneNumber}</td>
                     <td>{address}</td>
                     <td className="more-btn">
                       <span class="material-icons">more_vert</span>
@@ -91,7 +107,9 @@ function AdminUsers() {
                         </div>
                         <div
                           className="more-btn-item more-btn-item-delete "
-                          onClick={() => {}}
+                          onClick={() => {
+                            handleDeleteUser(id);
+                          }}
                         >
                           <span>Xóa</span>
                         </div>

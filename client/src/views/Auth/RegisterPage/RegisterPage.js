@@ -50,6 +50,19 @@ function RegisterPage() {
     if (!username) {
       usernameMessRef.current.innerText = "Trường này không được bỏ trống";
       isCheck = false;
+    } else {
+      const validateEmail = (email) => {
+        return String(email)
+          .toLowerCase()
+          .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          );
+      };
+
+      if (!validateEmail(username)) {
+        usernameMessRef.current.innerText = "Email không hợp lệ!";
+        isCheck = false;
+      }
     }
     if (!password) {
       passwordMessRef.current.innerText = "Trường này không được bỏ trống";
@@ -63,9 +76,8 @@ function RegisterPage() {
 
     if (isCheck) {
       const result = await register({ email: username, password });
-      if (result) navigate("/");
-      else {
-        toast.error("Thông tin không hợp lệ");
+      if (result) {
+        navigate("/");
       }
     }
   }

@@ -14,7 +14,7 @@ function LoginPage() {
   const isAuthenticated = account.isLogin;
   const [loginInput, setLoginInput] = useState({
     username: "hvcong@gmail.com",
-    password: "1111111",
+    password: "123456",
   });
 
   const usernameMessRef = useRef();

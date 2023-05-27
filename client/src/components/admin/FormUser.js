@@ -1,15 +1,27 @@
 import "./FormAddProduct.scss";
 import { useState, useRef, useEffect } from "react";
+import { isVietnamesePhoneNumberValid } from "./../../views/PaymentPage/PaymentPage";
+import authApi from "../../api/authApi";
+import { useGlobalContext } from "../../store/contexts/GlobalContext";
+import { toast } from "react-toastify";
 
 function FormUser({ setIsOpen, modalState, setModalState }) {
   const formMessageRef = useRef();
-
-  const [stateForm, setStateForm] = useState({
+  const [errMessage, setErrMessage] = useState({
     email: "",
-    phonenumber: "",
+    phoneNumber: "",
     address: "",
     name: "",
   });
+
+  const [stateForm, setStateForm] = useState({
+    email: "",
+    phoneNumber: "",
+    address: "",
+    name: "",
+  });
+
+  const { loadAllData, setIsSpinnerLoading } = useGlobalContext();
 
   useEffect(() => {
     if (modalState.itemSelected) {
@@ -20,7 +32,7 @@ function FormUser({ setIsOpen, modalState, setModalState }) {
     return () => {};
   }, [modalState]);
 
-  const { name, phonenumber, email, address } = stateForm;
+  const { id, name, phoneNumber, email, address } = stateForm;
 
   function handleOnChange(e) {
     setStateForm({
@@ -31,6 +43,51 @@ function FormUser({ setIsOpen, modalState, setModalState }) {
 
   async function handleOnSubmit(e) {
     e.preventDefault();
+
+    let _errMess = {};
+
+    let isCheck = true;
+
+    if (!stateForm.name) {
+      _errMess.name = "Không được bỏ trống!";
+      isCheck = false;
+    } else if (!stateForm.name.trim()) {
+      _errMess.name = "Không được bỏ trống!";
+      isCheck = false;
+    }
+
+    if (!stateForm.phoneNumber) {
+      _errMess.phoneNumber = "Không được bỏ trống!";
+      isCheck = false;
+    } else if (!stateForm.phoneNumber.trim()) {
+      _errMess.phoneNumber = "Không được bỏ trống!";
+      isCheck = false;
+    } else {
+      if (!isVietnamesePhoneNumberValid(stateForm.phoneNumber)) {
+        _errMess.phoneNumber = "Không hợp lệ!";
+        isCheck = false;
+      }
+    }
+
+    if (isCheck) {
+      setIsSpinnerLoading(true);
+      let res = await authApi.updateUser({
+        id: stateForm.id,
+        email: stateForm.email,
+        name: stateForm.name,
+        address: stateForm.address,
+        phoneNumber: stateForm.phoneNumber,
+      });
+
+      if (res.success) {
+        await loadAllData();
+        setIsSpinnerLoading(false);
+        toast.info("Cập nhật thông tin thành công");
+      } else {
+        setIsSpinnerLoading(false);
+        toast.error("Có lỗi xảy ra, vui lòng thử lại");
+      }
+    }
   }
 
   return (
@@ -47,6 +104,17 @@ function FormUser({ setIsOpen, modalState, setModalState }) {
       <div className="modal__body">
         <form className="form__create-product p-4">
           <div className="row">
+            <div className="form-group col-12">
+              <label htmlFor="price">Mã KH</label>
+              <input
+                name="id"
+                value={id}
+                onChange={handleOnChange}
+                className="form-control"
+                id="id"
+                readOnly
+              />
+            </div>
             <div className="form-group col-12">
               <label htmlFor="price">Email</label>
               <input
@@ -73,19 +141,21 @@ function FormUser({ setIsOpen, modalState, setModalState }) {
                 placeholder="Họ và tên..."
                 readOnly={modalState.type == "view"}
               />
+              <div className="message">{errMessage.phoneNumber}</div>
             </div>
             <div className="form-group col-12">
               <label htmlFor="sale">Số điện thoại</label>
               <input
                 type="text"
-                name="phonenumber"
-                value={phonenumber}
+                name="phoneNumber"
+                value={phoneNumber}
                 onChange={handleOnChange}
                 className="form-control"
-                id="phonenumber"
+                id="phoneNumber"
                 placeholder="Số điện thoại..."
                 readOnly={modalState.type == "view"}
               />
+              <div className="message">{errMessage.phoneNumber}</div>
             </div>
 
             <div className="form-group col-12">
@@ -100,6 +170,7 @@ function FormUser({ setIsOpen, modalState, setModalState }) {
                 readOnly={modalState.type == "view"}
                 placeholder="Địa chỉ..."
               />
+              <div className="message">{errMessage.address}</div>
             </div>
 
             {modalState.type != "view" ? (

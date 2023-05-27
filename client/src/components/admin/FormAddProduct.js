@@ -1,15 +1,27 @@
+import { toast } from "react-toastify";
+import orderApi from "../../api/orderApi";
 import { useGlobalContext } from "../../store/contexts/GlobalContext";
 import "./FormAddProduct.scss";
 import { useState, useRef, useEffect } from "react";
 
 function FormAddProduct({ setIsOpen, modalState, setModalState }) {
   const formMessageRef = useRef();
-  const { categories } = useGlobalContext();
+  const { categories, setIsSpinnerLoading, loadAllData } = useGlobalContext();
 
   const [stateForm, setStateForm] = useState({
     name: "",
     description: "",
-    imageUrl: "",
+    imageUri: "",
+    price: 0,
+    sale: 0,
+    quantity: 0,
+    category: "",
+  });
+
+  const [errMessage, setErrMessage] = useState({
+    name: "",
+    description: "",
+    imageUri: "",
     price: "",
     sale: "",
     quantity: "",
@@ -25,7 +37,7 @@ function FormAddProduct({ setIsOpen, modalState, setModalState }) {
     return () => {};
   }, [modalState]);
 
-  const { name, description, imageUrl, price, sale, quantity, category } =
+  const { name, description, imageUri, price, sale, quantity, category, id } =
     stateForm;
 
   function handleOnChange(e) {
@@ -37,14 +49,91 @@ function FormAddProduct({ setIsOpen, modalState, setModalState }) {
 
   async function handleOnSubmit(e) {
     e.preventDefault();
+    let _errMess = {};
 
+    let isCheck = true;
+
+    if (!stateForm.name) {
+      _errMess.name = "Không được bỏ trống!";
+      isCheck = false;
+    } else if (!stateForm.name.trim()) {
+      _errMess.name = "Không được bỏ trống!";
+      isCheck = false;
+    }
+
+    if (!stateForm.imageUri) {
+      _errMess.imageUri = "Không được bỏ trống!";
+      isCheck = false;
+    } else if (!stateForm.imageUri.trim()) {
+      _errMess.imageUri = "Không được bỏ trống!";
+      isCheck = false;
+    }
+
+    if (!stateForm.price) {
+      _errMess.price = "Không được bỏ trống!";
+      isCheck = false;
+    } else if (stateForm.price < 0) {
+      _errMess.price = "Giá phải >= 0";
+      isCheck = false;
+    }
+
+    if (stateForm.sale == "") {
+    } else if (stateForm.sale < 0 || stateForm > 100) {
+      _errMess.sale = "Giảm giá phải nằm trong khoảng từ 0 - 100";
+      isCheck = false;
+    }
+
+    if (!stateForm.quantity) {
+      _errMess.quantity = "Không được bỏ trống!";
+      isCheck = false;
+    } else if (stateForm.quantity < 0) {
+      _errMess.quantity = "Số lượng phải >= 0";
+      isCheck = false;
+    }
+
+    setErrMessage(_errMess);
     //simple validate
-    if (!name || !price || !imageUrl) {
-      formMessageRef.current.innerText =
-        "Vui lòng điền đầy đủ thông tin vào form!!";
-    } else {
-      // all good
-      setIsOpen(false);
+    if (isCheck) {
+      setIsSpinnerLoading(true);
+
+      if (modalState.type == "create") {
+        let res = await orderApi.addProduct({
+          name: stateForm.name,
+          quantity: stateForm.quantity,
+          imageUri: stateForm.imageUri,
+          price: stateForm.price,
+          sale: stateForm.sale,
+          category: stateForm.category,
+        });
+        if (res) {
+          await loadAllData();
+          setIsSpinnerLoading(false);
+          toast.success("Thêm sản phẩm thành công");
+          setIsOpen(false);
+        } else {
+          setIsSpinnerLoading(false);
+        }
+      }
+
+      if (modalState.type == "update") {
+        let res = await orderApi.updateProduct({
+          id: stateForm.id,
+          name: stateForm.name,
+          quantity: stateForm.quantity,
+          imageUri: stateForm.imageUri,
+          price: stateForm.price,
+          sale: stateForm.sale,
+          category: stateForm.category,
+        });
+        if (res) {
+          await loadAllData();
+          setIsSpinnerLoading(false);
+          toast.success("Cập nhật thông tin thành công");
+          setIsOpen(false);
+        } else {
+          setIsSpinnerLoading(false);
+        }
+      }
     }
   }
 
@@ -63,6 +152,18 @@ function FormAddProduct({ setIsOpen, modalState, setModalState }) {
         <form className="form__create-product p-4">
           <div className="row">
             <div className="form-group col-12">
+              <label htmlFor="title">Mã sản phẩm</label>
+              <input
+                type="text"
+                name="id"
+                value={id}
+                onChange={handleOnChange}
+                className="form-control"
+                id="id"
+                readOnly
+              />
+            </div>
+            <div className="form-group col-12">
               <label htmlFor="title">Tên sản phẩm</label>
               <input
                 type="text"
@@ -74,8 +175,9 @@ function FormAddProduct({ setIsOpen, modalState, setModalState }) {
                 readOnly={modalState.type == "view"}
                 placeholder="Nhập tên sản phẩm..."
               />
+              <div className="message">{errMessage.name}</div>
             </div>
-            <div className="form-group col-12">
+            {/* <div className="form-group col-12">
               <label htmlFor="description">Mô tả</label>
               <textarea
                 rows="4"
@@ -87,20 +189,22 @@ function FormAddProduct({ setIsOpen, modalState, setModalState }) {
                 readOnly={modalState.type == "view"}
                 placeholder="Mô tả sản phẩm..."
               />
-            </div>
+              <div className="message">{errMessage.description}</div>
+            </div> */}
 
             <div className="form-group col-12 col-sm-6">
-              <label htmlFor="imageUrl">Hình ảnh</label>
+              <label htmlFor="imageUri">Hình ảnh</label>
               <input
                 type="text"
-                name="imageUrl"
-                value={imageUrl}
+                name="imageUri"
+                value={imageUri}
                 onChange={handleOnChange}
                 className="form-control"
-                id="imageUrl"
+                id="imageUri"
                 placeholder="https://..."
                 readOnly={modalState.type == "view"}
               />
+              <div className="message">{errMessage.imageUri}</div>
             </div>
             <div className="form-group col-12 col-sm-6">
               <label htmlFor="price">Giá sản phẩm</label>
@@ -111,9 +215,11 @@ function FormAddProduct({ setIsOpen, modalState, setModalState }) {
                 onChange={handleOnChange}
                 className="form-control"
                 id="price"
+                min={0}
                 placeholder="Giá..."
                 readOnly={modalState.type == "view"}
               />
+              <div className="message">{errMessage.price}</div>
             </div>
             <div className="form-group col-12 col-sm-6">
               <label htmlFor="sale">Giảm giá</label>
@@ -124,9 +230,11 @@ function FormAddProduct({ setIsOpen, modalState, setModalState }) {
                 onChange={handleOnChange}
                 className="form-control"
                 id="sale"
+                min={0}
                 placeholder="Giảm giá..."
                 readOnly={modalState.type == "view"}
               />
+              <div className="message">{errMessage.sale}</div>
             </div>
             <div className="form-group col-12 col-sm-6">
               <label htmlFor="quantity">Số lượng</label>
@@ -137,9 +245,11 @@ function FormAddProduct({ setIsOpen, modalState, setModalState }) {
                 onChange={handleOnChange}
                 className="form-control"
                 id="quantity"
+                min={0}
                 placeholder="Số lượng..."
                 readOnly={modalState.type == "view"}
               />
+              <div className="message">{errMessage.quantity}</div>
             </div>
             <div className="form-group col-12 col-sm-6">
               <label htmlFor="category">Nhóm sản phẩm</label>
@@ -159,7 +269,7 @@ function FormAddProduct({ setIsOpen, modalState, setModalState }) {
 
             <div className="form-group col-12 ">
               <div className="form__btn-group">
-                {modalState.type == "update" && (
+                {modalState.type != "view" && (
                   <>
                     <span
                       className="btn btn-danger"

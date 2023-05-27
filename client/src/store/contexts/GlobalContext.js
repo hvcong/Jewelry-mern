@@ -8,19 +8,24 @@ import {
 import authApi from "../../api/authApi";
 import { toast } from "react-toastify";
 import orderApi from "../../api/orderApi";
+import axios from "axios";
 
 const GlobalContext = createContext();
 
 function GlobalContextProvider({ children }) {
-  const [isLoading, setIsSpinnerLoading] = useState(true);
+  const [isLoading, setIsSpinnerLoading] = useState(false);
 
   const [account, setAccount] = useState({
-    isLogin: true,
-    email: "hvcong101201@gmail.com",
-    name: "ad",
-    address: "29/8/3 đường số 10, hiệp bình Chánh, thủ đức",
-    phonenumber: "0864234234",
-    role: "ad",
+    isLogin: false,
+    // email: "hvcong101201@gmail.com",
+    // name: "ad",
+    // address: "29/8/3 đường số 10, hiệp bình Chánh, thủ đức",
+    // phonenumber: "0864234234",
+    // role: "ad",
+  });
+
+  const [filter, setFilter] = useState({
+    order: "",
   });
 
   const [products, setProducts] = useState([]);
@@ -29,216 +34,11 @@ function GlobalContextProvider({ children }) {
 
   const [categories, setCategories] = useState([]);
 
-  const [orders, setOrders] = useState([
-    {
-      id: 1,
-      phonenumber: "0823432121",
-      address: "2/3/4 duong 15",
-      orderDate: new Date().toDateString(),
-      state: "oke",
-      cost: 10000,
-      orderDetails: [
-        {
-          id: 322,
-          quantity: 5,
-          price: 10000,
-          sale: 2,
-          product: {
-            description:
-              "Sản phẩm đồng hồ mang thương hiệu Elio với nhiều mẫu mã năng động, trẻ trung nhưng không kém phần tinh tế và sang trọng, phù hợp với tất cả mọi người hoạt động ở nhiều lĩnh vực từ dân văn phòng đến doanh nhân.",
-            imageUrl:
-              "https://nypost.com/wp-content/uploads/sites/2/2021/10/amyo-jewelry.jpg?quality=90&strip=all",
-            name: "Coca cola ",
-            price: 10000,
-            quantity: 10,
-            sale: 10,
-            id: 221,
-          },
-        },
-        {
-          id: 4,
-          quantity: 5,
-          price: 10000,
-          sale: 5,
-          product: {
-            description:
-              "Sản phẩm đồng hồ mang thương hiệu Elio với nhiều mẫu mã năng động, trẻ trung nhưng không kém phần tinh tế và sang trọng, phù hợp với tất cả mọi người hoạt động ở nhiều lĩnh vực từ dân văn phòng đến doanh nhân.",
-            imageUrl:
-              "https://nypost.com/wp-content/uploads/sites/2/2021/10/amyo-jewelry.jpg?quality=90&strip=all",
-            name: "Coca cola 2 ",
-            price: 10000,
-            quantity: 10,
-            sale: 0,
-            id: 229,
-          },
-        },
-      ],
-      account: {
-        email: "dfsdfds@gmail.com",
-        name: "Hoàng Văn Công",
-        address: "29/8/3 đường số 10, hiệp bình Chánh, thủ đức",
-        phonenumber: "0864234234",
-        role: "kh",
-      },
-    },
-    {
-      id: 2,
-      phonenumber: "0823432121",
-      address: "2/3/4 duong 15",
-      orderDate: new Date().toDateString(),
-      state: "pendding",
-      cost: 10000,
-      orderDetails: [
-        {
-          id: 322,
-          quantity: 5,
-          price: 10000,
-          sale: 10,
-          product: {
-            description:
-              "Sản phẩm đồng hồ mang thương hiệu Elio với nhiều mẫu mã năng động, trẻ trung nhưng không kém phần tinh tế và sang trọng, phù hợp với tất cả mọi người hoạt động ở nhiều lĩnh vực từ dân văn phòng đến doanh nhân.",
-            imageUrl:
-              "https://nypost.com/wp-content/uploads/sites/2/2021/10/amyo-jewelry.jpg?quality=90&strip=all",
-            name: "Coca cola ",
-            price: 10000,
-            quantity: 10,
-            sale: 10,
-            id: 221,
-          },
-        },
-        {
-          id: 4,
-          quantity: 5,
-          price: 10000,
-          sale: 10,
-          product: {
-            description:
-              "Sản phẩm đồng hồ mang thương hiệu Elio với nhiều mẫu mã năng động, trẻ trung nhưng không kém phần tinh tế và sang trọng, phù hợp với tất cả mọi người hoạt động ở nhiều lĩnh vực từ dân văn phòng đến doanh nhân.",
-            imageUrl:
-              "https://nypost.com/wp-content/uploads/sites/2/2021/10/amyo-jewelry.jpg?quality=90&strip=all",
-            name: "Coca cola 2 ",
-            price: 10000,
-            quantity: 10,
-            sale: 0,
-            id: 229,
-          },
-        },
-      ],
-      account: {
-        email: "dfsdfds@gmail.com",
-        name: "Hoàng Văn Công",
-        address: "29/8/3 đường số 10, hiệp bình Chánh, thủ đức",
-        phonenumber: "0864234234",
-        role: "kh",
-      },
-    },
-    {
-      id: 3,
-      phonenumber: "0823432121",
-      address: "2/3/4 duong 15",
-      orderDate: new Date().toDateString(),
-      state: "cancel",
-      cost: 10000,
-      orderDetails: [
-        {
-          id: 322,
-          quantity: 5,
-          price: 10000,
-          sale: 10,
-          product: {
-            description:
-              "Sản phẩm đồng hồ mang thương hiệu Elio với nhiều mẫu mã năng động, trẻ trung nhưng không kém phần tinh tế và sang trọng, phù hợp với tất cả mọi người hoạt động ở nhiều lĩnh vực từ dân văn phòng đến doanh nhân.",
-            imageUrl:
-              "https://nypost.com/wp-content/uploads/sites/2/2021/10/amyo-jewelry.jpg?quality=90&strip=all",
-            name: "Coca cola ",
-            price: 10000,
-            quantity: 10,
-            sale: 10,
-            id: 221,
-          },
-        },
-        {
-          id: 4,
-          quantity: 5,
-          price: 10000,
-          sale: 10,
-          product: {
-            description:
-              "Sản phẩm đồng hồ mang thương hiệu Elio với nhiều mẫu mã năng động, trẻ trung nhưng không kém phần tinh tế và sang trọng, phù hợp với tất cả mọi người hoạt động ở nhiều lĩnh vực từ dân văn phòng đến doanh nhân.",
-            imageUrl:
-              "https://nypost.com/wp-content/uploads/sites/2/2021/10/amyo-jewelry.jpg?quality=90&strip=all",
-            name: "Coca cola 2 ",
-            price: 10000,
-            quantity: 10,
-            sale: 0,
-            id: 229,
-          },
-        },
-      ],
-      account: {
-        email: "dfsdfds@gmail.com",
-        name: "Hoàng Văn Công",
-        address: "29/8/3 đường số 10, hiệp bình Chánh, thủ đức",
-        phonenumber: "0864234234",
-        role: "kh",
-      },
-    },
-    {
-      id: 4,
-      phonenumber: "0823432121",
-      address: "2/3/4 duong 15",
-      orderDate: new Date().toDateString(),
-      state: "pendding",
-      cost: 10000,
-      orderDetails: [
-        {
-          id: 322,
-          quantity: 5,
-          price: 10000,
-          sale: 10,
-          product: {
-            description:
-              "Sản phẩm đồng hồ mang thương hiệu Elio với nhiều mẫu mã năng động, trẻ trung nhưng không kém phần tinh tế và sang trọng, phù hợp với tất cả mọi người hoạt động ở nhiều lĩnh vực từ dân văn phòng đến doanh nhân.",
-            imageUrl:
-              "https://nypost.com/wp-content/uploads/sites/2/2021/10/amyo-jewelry.jpg?quality=90&strip=all",
-            name: "Coca cola ",
-            price: 10000,
-            quantity: 10,
-            sale: 10,
-            id: 221,
-          },
-        },
-        {
-          id: 4,
-          quantity: 5,
-          price: 10000,
-          sale: 10,
-          product: {
-            description:
-              "Sản phẩm đồng hồ mang thương hiệu Elio với nhiều mẫu mã năng động, trẻ trung nhưng không kém phần tinh tế và sang trọng, phù hợp với tất cả mọi người hoạt động ở nhiều lĩnh vực từ dân văn phòng đến doanh nhân.",
-            imageUrl:
-              "https://nypost.com/wp-content/uploads/sites/2/2021/10/amyo-jewelry.jpg?quality=90&strip=all",
-            name: "Coca cola 2 ",
-            price: 10000,
-            quantity: 10,
-            sale: 0,
-            id: 229,
-          },
-        },
-      ],
-      account: {
-        email: "dfsdfds@gmail.com",
-        name: "Hoàng Văn Công",
-        address: "29/8/3 đường số 10, hiệp bình Chánh, thủ đức",
-        phonenumber: "0864234234",
-        role: "kh",
-      },
-    },
-  ]);
+  const [orders, setOrders] = useState([]);
 
   const [pageState, setPageState] = useState({
     current: 1,
-    total: 4, // tổng số trang
+    total: 0, // tổng số trang
   });
 
   const [cart, setCart] = useState({
@@ -256,14 +56,16 @@ function GlobalContextProvider({ children }) {
 
   // load products
   async function loadProducts() {
-    let res = await orderApi.getAllProducts();
-    if (res.products) {
-      setProducts(res.products);
+    try {
+      let res = (await orderApi.getAllProducts()) || [];
+      setProducts(res);
+    } catch (err) {
+      console.log(err);
     }
   }
 
   async function loadAllData() {
-    loadProducts();
+    await loadProducts();
 
     // load categories
     let res = await orderApi.getAllCategories();
@@ -272,16 +74,31 @@ function GlobalContextProvider({ children }) {
     }
 
     // load users
-    res = await orderApi.getAllUsers();
-    if (res.users) {
-      setUsers(res.users);
-    }
+    let users = (await authApi.getAll()) || [];
 
     // load orders
-    res = await orderApi.getAll();
-    if (res.orders) {
-      setOrders(res.orders);
-    }
+    let orders = (await orderApi.getAll()) || [];
+    console.log(orders);
+    let _orders = orders?.map((order) => {
+      let _user = null;
+      users.map((user) => {
+        let listOrders = user.orders || [];
+
+        listOrders.map((item) => {
+          if (item.id == order.id) {
+            _user = user;
+          }
+        });
+      });
+
+      return {
+        ...order,
+        account: _user,
+      };
+    });
+
+    setOrders(_orders || []);
+    setUsers(users);
   }
 
   // add to cart
@@ -355,41 +172,67 @@ function GlobalContextProvider({ children }) {
     });
   }
 
-  function paymentOke() {
+  async function paymentOke() {
     setCart({
       items: [],
     });
 
-    loadAllData();
+    await loadAllData();
   }
 
   ////// auth
   // login
   async function logIn(data) {
-    let res = await authApi.login(data);
-    if (res) {
-      setAccount({
-        ...res,
-        isLogin: true,
+    try {
+      let res = (await authApi.getAll()) || [];
+      let _account = null;
+      res.map((account) => {
+        if (account.email == data.email && account.password == data.password) {
+          _account = account;
+        }
       });
-      toast.success("Đăng nhập thành công");
-      return true;
-    } else {
+
+      if (_account) {
+        setAccount({
+          ..._account,
+          isLogin: true,
+        });
+        toast.success("Đăng nhập thành công");
+        return true;
+      } else {
+        return false;
+      }
+    } catch (eerr) {
+      console.log(eerr);
       return false;
     }
   }
 
   // register
   async function register(data) {
-    let res = await authApi.register(data);
-    if (res) {
-      setAccount({
-        ...res,
-        isLogin: true,
-      });
-      return true;
-    } else {
+    let userFound = users.filter((item) => {
+      return item.email == data.email;
+    });
+
+    if (userFound.length > 0) {
+      toast.error("Email này đã được sử dụng bởi tài khoản khác!");
       return false;
+    } else {
+      let res = await authApi.register({
+        ...data,
+        role: "kh",
+      });
+
+      if (res) {
+        setAccount({
+          ...res,
+          isLogin: true,
+        });
+        return true;
+      } else {
+        toast.error("Thông tin không hợp lệ!");
+        return false;
+      }
     }
   }
 
@@ -418,9 +261,18 @@ function GlobalContextProvider({ children }) {
     return () => {};
   }, []);
 
+  useEffect(() => {
+    let tmp = Math.floor(products.length / 8);
+
+    setPageState({
+      current: 1,
+      total: products.length % 8 > 0 ? tmp + 1 : tmp, // tổng số trang
+    });
+    return () => {};
+  }, [products]);
+
   const GlobalContextData = {
     isLoading,
-    setIsSpinnerLoading,
     logIn,
     logOut,
     register,
@@ -437,6 +289,10 @@ function GlobalContextProvider({ children }) {
     users,
     orders,
     categories,
+    setIsSpinnerLoading,
+    loadAllData,
+    setFilter,
+    filter,
   };
 
   return (
