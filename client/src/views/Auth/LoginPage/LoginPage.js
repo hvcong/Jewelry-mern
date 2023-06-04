@@ -10,8 +10,8 @@ function LoginPage() {
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuthContext();
   const [loginInput, setLoginInput] = useState({
-    username: "",
-    password: "",
+    username: "admin",
+    password: "admin",
   });
 
   const usernameMessRef = useRef();
